@@ -1,9 +1,11 @@
-import UserList from "./components/UserList";
+import RoomList from "./components/RoomList";
+import MessageBox from "./components/MessageBox";
 
 function App() {
   return (
     <div className="App">
-      <UserList />
+      <RoomList />
+      <MessageBox /> 
     </div>
   );
 }

@@ -7,11 +7,46 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.App {
+  text-align: center;
+  display: flex;
+  height: 700px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-#user-list {
+ul {
   list-style-type: none;
+}
+
+li {
+  text-align: left;
+}
+
+#user-list {
+  /* display: flex; */
+  flex: 1;
+  background-color: aquamarine;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.last-message {
+  font-size: 0.9rem;
+}
+
+#message-box {
+  /* display: flex; */
+  flex: 3;
+  /* background-color:red; */
+}
+
+#message-input {
+  display: flex;
 }

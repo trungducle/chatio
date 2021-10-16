@@ -1,8 +1,4 @@
 const config = require("dotenv").config();
-if (config.error) {
-  throw config.error;
-}
-
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
