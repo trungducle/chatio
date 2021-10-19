@@ -1,4 +1,5 @@
 import React from "react";
+import "./room.css";
 
 const Room = ({ id, name, lastMessage }) => {
   return (
