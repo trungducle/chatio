@@ -27,18 +27,21 @@ class MessageInput extends React.Component {
     });
   }
 
-  sendMessage() {
-    if (this.state.input) {
-      this.setState({
-        input: ""
-      });
+  sendMessage(event) {
+    if ((event.type === "keydown" && event.key === "Enter")
+      || event.type === "click") {
+      if (this.state.input) {
+        this.setState({
+          input: ""
+        });
+      }
     }
   }
 
   render() {
     return (
       <div id="message-input">
-        <input type="text" value={this.state.input} onChange={this.handleChange} />
+        <input type="text" value={this.state.input} onChange={this.handleChange} onKeyDown={this.sendMessage} />
         <button onClick={this.sendMessage}>Send</button>
       </div>
     );
@@ -64,11 +67,11 @@ class Conversation extends React.Component {
   scrollToBottom = () => {
     this.messagesEnd.scrollIntoView({ behavior: "auto" });
   }
-  
+
   componentDidMount() {
     this.scrollToBottom();
   }
-  
+
   componentDidUpdate() {
     this.scrollToBottom();
   }
@@ -78,7 +81,7 @@ class Conversation extends React.Component {
       <div id="message-box">
         <div id="room-name">alice</div>
         <div id="message-display">
-          <Message senderName="alice"/>
+          <Message senderName="alice" />
           <Message senderName="alice" />
           <Message senderName="alice" />
           <Message senderName="alice" own />
@@ -86,8 +89,8 @@ class Conversation extends React.Component {
           <Message senderName="alice" />
           <Message senderName="alice" />
           <Message senderName="alice" />
-          <div style={{ float:"left", clear: "both" }}
-             ref={(el) => { this.messagesEnd = el; }}>
+          <div style={{ float: "left", clear: "both" }}
+            ref={(el) => { this.messagesEnd = el; }}>
           </div>
         </div>
         <MessageInput />
