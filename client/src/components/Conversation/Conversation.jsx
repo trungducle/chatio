@@ -61,12 +61,24 @@ class Conversation extends React.Component {
     }));
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+  }
+  
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+  
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
   render() {
     return (
       <div id="message-box">
         <div id="room-name">alice</div>
         <div id="message-display">
-          <Message senderName="alice" />
+          <Message senderName="alice"/>
           <Message senderName="alice" />
           <Message senderName="alice" />
           <Message senderName="alice" own />
@@ -74,6 +86,9 @@ class Conversation extends React.Component {
           <Message senderName="alice" />
           <Message senderName="alice" />
           <Message senderName="alice" />
+          <div style={{ float:"left", clear: "both" }}
+             ref={(el) => { this.messagesEnd = el; }}>
+          </div>
         </div>
         <MessageInput />
       </div>
