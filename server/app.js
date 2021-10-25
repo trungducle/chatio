@@ -7,6 +7,7 @@ const { Server } = require("socket.io");
 const users = require("./routes/users");
 const contacts = require("./routes/contacts");
 const conversations = require("./routes/conversations");
+const messages = require("./routes/messages");
 
 const app = express();
 const server = http.createServer(app);
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 8000;
 app.use("/users", users);
 app.use("/contacts", contacts);
 app.use("/conversations", conversations);
+app.use("/messages", messages);
 
 app.get("/", (req, res) => {
   res.sendFile(`${__dirname}/index.html`);

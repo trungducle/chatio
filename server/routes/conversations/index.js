@@ -1,7 +1,5 @@
 const express = require("express");
-const { db, pgp } = require("../database");
-// const pgp = require("pg-promise");
-// const {ColumnSet} = pgp.helpers;
+const { db, pgp } = require("../../database");
 const conversations = express.Router();
 
 conversations.use(express.json());
@@ -13,9 +11,9 @@ conversations.route("/")
       console.log("Querying to database...");
       const result = await db.query("SELECT * FROM conversation");
       console.log("Query done");
-      res.json(result.rows);
+      res.status(200).json(result);
     } catch (err) {
-      console.log(err.stack);
+      res.status(500).json(err);
     }
   })
   .post(async (req, res) => {
@@ -25,23 +23,24 @@ conversations.route("/")
       console.log("Querying...");
       const insertConversation = await db.query(
         "INSERT INTO conversation (name, creator_id) \
-        VALUES ($1, $2) RETURNING conversation_id AS conversationId;",
+        VALUES ($1, $2) RETURNING conversation_id AS conv_id;",
         [name, creatorId]
       );
 
-      const { conversationId } = insertConversation.rows[0];
+      const { conv_id } = insertConversation[0];
       const cs = new pgp.helpers.ColumnSet(
         ["conversation_id", "user_id"],
         { table: "participant" }
       );
       const insertValues = participantId.map((id) => ({
-        conversation_id: conversationId,
+        conversation_id: conv_id,
         user_id: id
       }));
       await db.none(pgp.helpers.insert(insertValues, cs));
-      console.log("Query done 1");
+      res.status(200).send("Done");
+      console.log("Query done");
     } catch (err) {
-      console.log(err);
+      res.status(500).json(err);
     }
   });
 

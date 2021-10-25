@@ -13,9 +13,9 @@ fullName.put("/", async (req, res) => {
       [firstName, lastName, userId]
     );
     console.log("Query done");
-    res.send("Query done");
+    res.status(200).send("Query done");
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 

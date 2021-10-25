@@ -1,14 +1,21 @@
-
 ul {
   list-style-type: none;
 }
 
-li {
+.room {
   text-align: left;
+  margin: 5px auto;
+  cursor: pointer;
+  padding: 0 10px 5px 10px;
+}
+
+.room:hover {
+  background-color: rgb(228, 228, 228);
 }
 
 #user-list {
-  flex: 1;
+  flex: 17;
+  width: 100%;
   background-color: aquamarine;
   overflow-y: scroll;
 }

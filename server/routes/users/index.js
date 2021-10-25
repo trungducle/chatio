@@ -18,10 +18,10 @@ users.route("/")
       console.log("Querying to database...");
       const result = await db.any("SELECT * FROM account");
       console.log("Query done");
-      res.json(result);
+      res.status(200).json(result);
       console.log(JSON.stringify(result));
     } catch (err) {
-      console.log(err.stack);
+      res.status(500).json(err);
     }
   })
   .post(async (req, res) => {
@@ -41,9 +41,9 @@ users.route("/")
         [firstName, lastName, email, phone, password]
       );
       console.log("Query done");
-      res.json(result);
+      res.status(200).send("Done");
     } catch (err) {
-      console.log(err);
+      res.status(500).json(err);
     }
   });
 
