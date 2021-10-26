@@ -15,12 +15,12 @@ userId.use("/phone", phone);
 
 userId.route("/")
 .get(async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req.params;
   try {
-    console.log(`Searching for user ${id}...`);
+    console.log(`Searching for user ${userId}...`);
     const result = await db.one(
       "SELECT * FROM account WHERE user_id = $1",
-      [id]
+      [userId]
     );
     console.log("Done");
     res.status(200).json(result);
@@ -29,12 +29,12 @@ userId.route("/")
   }
 })
 .delete(async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req.params;
   try {
-    console.log(`Deleting user ${id}...`);
+    console.log(`Deleting user ${userId}...`);
     await db.none(
       "DELETE FROM account WHERE user_id = $1",
-      [id]
+      [userId]
     );
     console.log("Done");
     res.status(200).send("Done");
