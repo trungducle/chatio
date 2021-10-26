@@ -4,15 +4,21 @@ import "./chatMenu.css";
 
 const MainSearchBar = () => {
   return (
-    // <div id="main-search-bar">
-      <input id="main-search-bar" type="text" placeholder="Search in Chat.IO..." />
-    // </div>
+    <input id="main-search-bar" type="text" placeholder="Search in Chat.IO..." />
+  );
+};
+
+const NavigationMenu = () => {
+  // TODO
+  return (
+    <nav></nav>
   );
 };
 
 const TopBar = () => {
   return (
     <div id="chat-menu-top">
+      <NavigationMenu />
       <MainSearchBar />
     </div>
   )

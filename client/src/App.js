@@ -1,4 +1,4 @@
-import ChatMenu from "./components/RoomList/ChatMenu";
+import ChatMenu from "./components/chatMenu/ChatMenu";
 import Conversation from "./components/Conversation/Conversation";
 import "./App.css";
 
