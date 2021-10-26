@@ -39,7 +39,7 @@ contacts.route("/:userId")
     const { userId } = req.params;
     try {
       console.log(`Searching for user ${userId}...`);
-      const result = await db.one(
+      const result = await db.any(
         "SELECT full_name FROM list_friends($1)",
         [userId]
       );
@@ -53,7 +53,7 @@ contacts.route("/:userId")
     const { userId } = req.params;
     try {
       console.log(`Searching for user ${userId}...`);
-      const result = await db.none(
+      await db.none(
         "CALL delete_contact($1, 0)",
         [userId]
       );
@@ -83,7 +83,7 @@ contacts.route("/:userId/:friendId")
     const { userId, friendId } = req.params;
     try {
       console.log(`Searching for user ${userId}...`);
-      const result = await db.none(
+      await db.none(
         "CALL delete_contact($1, $2)",
         [userId, friendId]
       );
