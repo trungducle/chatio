@@ -39,7 +39,7 @@ contacts.route("/:userId")
     const { userId } = req.params;
     try {
       console.log(`Searching for user ${userId}...`);
-      const result = await db.one(
+      const result = await db.query(
         "SELECT full_name FROM list_friends($1)",
         [userId]
       );
