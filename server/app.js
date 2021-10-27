@@ -1,8 +1,7 @@
-require("dotenv").config();
 const express = require("express");
+const dotenv = require("dotenv");
 const http = require("http");
 // const cors = require("cors");
-const { Server } = require("socket.io");
 
 const users = require("./routes/users");
 const contacts = require("./routes/contacts");
@@ -11,8 +10,9 @@ const messages = require("./routes/messages");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
-const PORT = process.env.PORT || 8000;
+const API_PORT = process.env.API_PORT || 8000;
+
+dotenv.config();
 
 // app.use(cors);
 app.use("/users", users);
@@ -24,18 +24,6 @@ app.get("/", (req, res) => {
   res.sendFile(`${__dirname}/index.html`);
 });
 
-io.on("connection", (socket) => {
-  io.emit("notify", `a user connected: ${socket.id}`);
-
-  socket.on("disconnect", () => {
-    console.log(`user ${socket.id} disconnected`);
-  });
-
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", `${socket.id}: ${msg}`);
-  })
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is running at port ${PORT}`);
+server.listen(API_PORT, () => {
+  console.log(`Server is running at port ${API_PORT}`);
 });

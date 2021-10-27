@@ -1,5 +1,5 @@
 const express = require("express");
-const { search } = require("./search");
+const search = require("./search");
 const { db } = require("../../../database");
 
 const conversationId = express.Router({ mergeParams: true });

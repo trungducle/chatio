@@ -9,7 +9,7 @@ fullName.put("/", async (req, res) => {
   const { firstName, lastName } = req.body;
   try {
     await db.none(
-      "UPDATE account SET first_fullName = $1, last_fullName = $2 WHERE user_id = $3",
+      "UPDATE account SET first_name = $1, last_name = $2 WHERE user_id = $3",
       [firstName, lastName, userId]
     );
     console.log("Query done");
