@@ -7,6 +7,8 @@ const users = require("./routes/users");
 const contacts = require("./routes/contacts");
 const conversations = require("./routes/conversations");
 const messages = require("./routes/messages");
+const login = require("./routes/login");
+const signup = require("./routes/signup");
 
 const app = express();
 const server = http.createServer(app);
@@ -19,6 +21,8 @@ app.use("/users", users);
 app.use("/contacts", contacts);
 app.use("/conversations", conversations);
 app.use("/messages", messages);
+app.use("/login", login);
+app.use("/signup", signup);
 
 app.get("/", (req, res) => {
   res.sendFile(`${__dirname}/index.html`);
