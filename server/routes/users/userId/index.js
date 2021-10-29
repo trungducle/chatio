@@ -3,14 +3,12 @@ const { db } = require("../../../database");
 const email = require("./email");
 const fullName = require("./fullName");
 const password = require("./password");
-const phone = require("./phone");
 
 const userId = express.Router({ mergeParams: true });
 
 userId.use("/email", email);
 userId.use("/fullname", fullName);
 userId.use("/password", password);
-userId.use("/phone", phone);
 
 userId.route("/")
 .get(async (req, res) => {
