@@ -6,25 +6,39 @@ ul {
   text-align: left;
   margin: 5px auto;
   cursor: pointer;
-  padding: 0 10px 5px 10px;
+  padding: 10px 10px;
 }
 
 .room:hover {
-  background-color: rgb(228, 228, 228);
+  background-color: rgb(240, 240, 240);
 }
 
 #user-list {
   flex: 17;
   width: 100%;
-  background-color: aquamarine;
+  background-color: #fff;
   overflow-y: scroll;
 }
 
 .user-name {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .last-message {
   font-size: 0.9rem;
+}
+
+#user-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+#user-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+#user-list::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  border-radius: 10px;
 }
