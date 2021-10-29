@@ -5,7 +5,8 @@ import "./App.css";
 import React, { useEffect, useState, useContext } from "react";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
-// import { AuthContext } from "./contexts/AuthContext";
+import NavigationPanel from "./components/navigation/navigationPanel";
+import { AuthContext } from "./contexts/AuthContext";
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,6 +18,7 @@ const Home = () => {
 
   return (
     <div className="App">
+      <NavigationPanel chat />
       <ChatMenu />
       <Conversation />
     </div>

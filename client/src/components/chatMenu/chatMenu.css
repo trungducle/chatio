@@ -1,4 +1,5 @@
 #chat-menu {
+  margin-left: 5%;
   flex: 1;
   height: 100%;
   display: flex;
