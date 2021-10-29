@@ -14,14 +14,14 @@ function App() {
   //   });
   //   return () => 0; 
   // }, [socket]);
-  // return (
-  //   <div className="App">
-  //     <ChatMenu />
-  //     <Conversation />
-  //   </div>
-  // );
+  return (
+    <div className="App">
+      <ChatMenu />
+      <Conversation />
+    </div>
+  );
   // return <LogIn />
-  return <SignUp />;
+  // return <SignUp />;
 }
 
 export default App;
