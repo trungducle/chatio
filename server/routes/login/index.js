@@ -9,7 +9,7 @@ login.post("/", async (req, res) => {
   try {
     const result = await db.one(
       "SELECT user_id FROM account \
-      WHERE (email = $1 OR phone = $1) AND password = $2",
+      WHERE email = $1 AND password = $2",
       [username, password]
     );
 

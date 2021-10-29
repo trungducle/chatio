@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./signup.css";
 
 export const SignUp = () => {
@@ -9,9 +10,9 @@ export const SignUp = () => {
 
   return (
     <div id="signup-wrapper">
-      <div id="signup">
+      <div id="signup-box">
         <h2 className="app-name">Sign up for ChatIO</h2>
-        <form method="post" id="signup-box" onSubmit={handleSubmit}>
+        <form method="post" id="signup-form" onSubmit={handleSubmit}>
           <div id="signup-name" className="form-field">
             <div id="signup-firstname">
               <label htmlFor="signup-firstname"></label>
@@ -38,10 +39,10 @@ export const SignUp = () => {
           <div id="signup-email" className="form-field">
             <label htmlFor="signup-email"></label>
             <input
-              type="text"
+              type="email"
               className="signup-input"
               name="signup-email"
-              placeholder="Email address or phone number"
+              placeholder="Email address"
               required
             />
           </div>
@@ -53,6 +54,7 @@ export const SignUp = () => {
               name="signup-password"
               placeholder="Password"
               autoComplete="off"
+              minLength="8"
               required
             />
           </div>
@@ -71,7 +73,7 @@ export const SignUp = () => {
             <button type="submit">Sign Up</button>
           </div>
           <div id="log-in" className="form-field">
-            Already have an account? <a href="#">Log In</a>
+            Already have an account? <Link to="/login">Log In</Link>
           </div>
         </form>
       </div>

@@ -25,7 +25,7 @@ conversationId.route("/")
     const { messageBody, senderId } = req.body;
     try {
       await db.none(
-        "INSERT INTO message (conversation_id, message_body, sender_id) \
+        "INSERT INTO message (conversation_id, message_body, sender_id)\
         VALUES ($1, $2, $3)",
         [conversationId, messageBody, senderId]
       );
@@ -37,7 +37,7 @@ conversationId.route("/")
   .delete(async (req, res) => {
     const { conversationId } = req.params;
     try {
-      const messages = await db.any(
+      await db.none(
         "DELETE FROM message WHERE conversation_id = $1",
         [conversationId]
       );

@@ -29,16 +29,15 @@ users.route("/")
       firstName,
       lastName,
       email,
-      phone,
       password,
     } = req.body;
 
     try {
       console.log("Querying...");
-      const result = await db.one(
-        "INSERT INTO account (first_name, last_name, email, phone, password) \
-        VALUES ($1, $2, $3, $4, $5) RETURNING *;",
-        [firstName, lastName, email, phone, password]
+      await db.none(
+        "INSERT INTO account (first_name, last_name, email, password) \
+        VALUES ($1, $2, $3, $4) RETURNING *;",
+        [firstName, lastName, email, password]
       );
       console.log("Query done");
       res.status(200).send("Done");
