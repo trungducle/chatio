@@ -48,7 +48,7 @@ conversations.get("/:userId", async (req, res) => {
   const {userId} = req.params;
   try {
     const result = await db.any(
-      "SELECT c.name, m.last_message FROM conversation c\
+      "SELECT c.conversation_id, c.name, m.last_message FROM conversation c\
       JOIN (\
         SELECT DISTINCT ON (conversation_id) conversation_id, message_body AS last_message\
         FROM message ORDER BY conversation_id, created_at desc\

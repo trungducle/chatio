@@ -43,7 +43,7 @@ class MessageInput extends React.Component {
       <div id="message-input">
         <input type="text" value={this.state.input} placeholder="Aa" onChange={this.handleChange} onKeyDown={this.sendMessage} />
         <button onClick={this.sendMessage}>
-          <span class="material-icons">send</span>
+          <span className="material-icons">send</span>
         </button>
       </div>
     );

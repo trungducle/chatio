@@ -5,7 +5,7 @@ import "./App.css";
 import React, { useEffect, useState, useContext } from "react";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
-import { AuthContext } from "./contexts/AuthContext";
+// import { AuthContext } from "./contexts/AuthContext";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,6 +13,8 @@ import {
 } from "react-router-dom";
 
 const Home = () => {
+  // const [conversationOnDisplay, setConversationOnDisplay] = useState("");
+
   return (
     <div className="App">
       <ChatMenu />
@@ -35,7 +37,7 @@ function App() {
   //     <Conversation />
   //   </div>
   // );
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
   // return user.authenticated ? (
   //   <Home />
   // ) : <LogIn />;
