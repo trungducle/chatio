@@ -22,14 +22,15 @@ li a {
   text-decoration: none;
 }
 
-li a.active {
+li.active {
   border-left: 3px solid #5294ff;
+}
+
+
+li:hover {
+  background-color: #555;
 }
 
 .category .material-icons {
   color: #fff;
-}
-
-li a:hover {
-  background-color: #555;
 }

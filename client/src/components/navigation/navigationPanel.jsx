@@ -1,19 +1,20 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./navigationPanel.css";
 
 const NavigationPanel = (props) => {
   return (
     <div id="navigation-panel">
       <ul>
-        <li>
-          <a href="#" className={props.chat ? "category active" : "category"}>
-          <span class="material-icons">forum</span>
-          </a>
+        <li className={props.chat ? "category active" : "category"}>
+          <Link to="/">
+            <span class="material-icons">forum</span>
+          </Link>
         </li>
-        <li>
-          <a href="#" className={props.contact ? "category active" : "category"}>
+        <li className={props.contact ? "category active" : "category"}>
+          <Link to="/contacts">
           <span class="material-icons">contacts</span>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>
