@@ -22,20 +22,21 @@ conversations.route("/")
     try {
       console.log("Querying...");
       const insertConversation = await db.query(
-        "INSERT INTO conversation (name, creator_id) \
-        VALUES ($1, $2) RETURNING conversation_id AS conv_id;",
+        "INSERT INTO conversation (name, creator_id)\
+        VALUES ($1, $2) RETURNING conversation_id;",
         [name, creatorId]
       );
 
-      const { conv_id } = insertConversation[0];
+      const { conversation_id } = insertConversation[0];
       const cs = new pgp.helpers.ColumnSet(
         ["conversation_id", "user_id"],
         { table: "participant" }
       );
-      const insertValues = participantId.map((id) => ({
-        conversation_id: conv_id,
-        user_id: id
+      const insertValues = participantId.map((user_id) => ({
+        conversation_id,
+        user_id
       }));
+
       await db.none(pgp.helpers.insert(insertValues, cs));
       res.status(200).send("Done");
       console.log("Query done");
@@ -45,12 +46,12 @@ conversations.route("/")
   });
 
 conversations.get("/:userId", async (req, res) => {
-  const {userId} = req.params;
+  const { userId } = req.params;
   try {
     const result = await db.any(
-      "SELECT c.conversation_id, c.name, m.last_message FROM conversation c\
+      "SELECT c.conversation_id, c.name, m.latest_message FROM conversation c\
       JOIN (\
-        SELECT DISTINCT ON (conversation_id) conversation_id, message_body AS last_message\
+        SELECT DISTINCT ON (conversation_id) conversation_id, message_body AS latest_message\
         FROM message ORDER BY conversation_id, created_at desc\
       ) m ON c.conversation_id = m.conversation_id\
       JOIN participant p on p.conversation_id = m.conversation_id\

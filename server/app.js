@@ -24,10 +24,6 @@ app.use("/messages", messages);
 app.use("/login", login);
 app.use("/signup", signup);
 
-// app.get("/", (req, res) => {
-//   res.sendFile(`${__dirname}/index.html`);
-// });
-
 server.listen(API_PORT, () => {
   console.log(`Server is running at port ${API_PORT}`);
 });

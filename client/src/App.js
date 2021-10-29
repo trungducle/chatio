@@ -5,8 +5,11 @@ import "./App.css";
 import React, { useEffect, useState, useContext } from "react";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
-import NavigationPanel from "./components/navigation/navigationPanel";
+import NavigationPanel from "./components/navigation/NavigationPanel";
 import { AuthContext } from "./contexts/AuthContext";
+import {
+  CurrentConversationProvider
+} from "./contexts/CurrentConversationContext";
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,13 +17,13 @@ import {
 } from "react-router-dom";
 
 const Home = () => {
-  // const [conversationOnDisplay, setConversationOnDisplay] = useState("");
-
   return (
     <div className="App">
       <NavigationPanel chat />
-      <ChatMenu />
-      <Conversation />
+      <CurrentConversationProvider>
+        <ChatMenu />
+        <Conversation />
+      </CurrentConversationProvider>
     </div>
   );
 };
@@ -33,20 +36,11 @@ function App() {
   //   });
   //   return () => 0; 
   // }, [socket]);
-  // return (
-  //   <div className="App">
-  //     <ChatMenu />
-  //     <Conversation />
-  //   </div>
-  // );
+
   // const { user } = useContext(AuthContext);
-  // return user.authenticated ? (
-  //   <Home />
-  // ) : <LogIn />;
-  // return <SignUp />;
+
   return (
     <Router>
-      {/* {user.authenticated ? <Home /> : <LogIn />} */}
       <Switch>
         <Route path="/login">
           <LogIn />
@@ -55,6 +49,7 @@ function App() {
           <SignUp />
         </Route>
         <Route path="/">
+          {/* {user.authenticated ? <Home /> : <LogIn />} */}
           <Home />
         </Route>
       </Switch>

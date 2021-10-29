@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./conversation.css";
 
 const Message = (props) => {
@@ -10,95 +10,82 @@ const Message = (props) => {
   );
 };
 
-class MessageInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      input: ""
-    };
+const MessageInput = () => {
+  const [input, setInput] = useState("");
 
-    this.handleChange = this.handleChange.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
-  }
+  const handleChange = (event) => {
+    setInput(event.target.value);
+  };
 
-  handleChange(event) {
-    this.setState({
-      input: event.target.value
-    });
-  }
-
-  sendMessage(event) {
+  const sendMessage = (event) => {
     if ((event.type === "keydown" && event.key === "Enter")
       || event.type === "click") {
-      if (this.state.input) {
-        this.setState({
-          input: ""
-        });
+      if (input) {
+        setInput("");
       }
     }
   }
 
-  render() {
-    return (
-      <div id="message-input">
-        <input type="text" value={this.state.input} placeholder="Aa" onChange={this.handleChange} onKeyDown={this.sendMessage} />
-        <button onClick={this.sendMessage}>
-          <span className="material-icons">send</span>
-        </button>
+  return (
+    <div id="message-input">
+      <input
+        type="text"
+        value={input}
+        placeholder="Aa"
+        onChange={handleChange}
+        onKeyDown={sendMessage}
+      />
+      <button onClick={sendMessage}>
+        <span className="material-icons">send</span>
+      </button>
+    </div>
+  );
+};
+
+const ConversationTopBar = (props) => (
+  <div id="room-name">{props.name}</div>
+);
+
+const MessageDisplay = () => {
+  const [messages, setMessages] = useState([]);
+  const messageEndRef = useRef(null);
+
+  const appendMessage = (event) => {
+    setMessages((prevMessages) => [...prevMessages, event.target.value]);
+  };
+
+  const scrollToBottom = () => {
+    messageEndRef.current.scrollIntoView({ behavior: "auto" });
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
+  return (
+    <div id="message-display">
+      <Message senderName="alice" />
+      <Message senderName="alice" />
+      <Message senderName="alice" />
+      <Message senderName="me" own />
+      <Message senderName="me" own />
+      <Message senderName="alice" />
+      <Message senderName="alice" />
+      <Message senderName="alice" />
+      <div
+        style={{ float: "left", clear: "both" }}
+        ref={messageEndRef}>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-class Conversation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: ""
-    };
-
-    this.appendMessage = this.appendMessage.bind(this);
-  }
-
-  appendMessage(event) {
-    this.setState((state) => ({
-      messages: state.messages + event.target.value
-    }));
-  }
-
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "auto" });
-  }
-
-  componentDidMount() {
-    this.scrollToBottom();
-  }
-
-  componentDidUpdate() {
-    this.scrollToBottom();
-  }
-
-  render() {
-    return (
-      <div id="message-box">
-        <div id="room-name">alice</div>
-        <div id="message-display">
-          <Message senderName="alice" />
-          <Message senderName="alice" />
-          <Message senderName="alice" />
-          <Message senderName="alice" own />
-          <Message senderName="alice" own />
-          <Message senderName="alice" />
-          <Message senderName="alice" />
-          <Message senderName="alice" />
-          <div style={{ float: "left", clear: "both" }}
-            ref={(el) => { this.messagesEnd = el; }}>
-          </div>
-        </div>
-        <MessageInput />
-      </div>
-    );
-  }
-}
+const Conversation = () => {
+  return (
+    <div id="message-box">
+      <ConversationTopBar name="alice" />
+      <MessageDisplay />
+      <MessageInput />
+    </div>
+  );
+};
 
 export default Conversation;

@@ -8,8 +8,8 @@ search.get("/", async (req, res) => {
   const searchPattern = `%${value}%`
   try {
     const result = await db.any(
-      "SELECT message_id, message_body, sender_id \
-      FROM message \
+      "SELECT message_id, message_body, sender_id\
+      FROM message\
       WHERE message_body LIKE $1",
       [searchPattern]
     );

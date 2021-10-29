@@ -8,12 +8,12 @@ const NavigationPanel = (props) => {
       <ul>
         <li className={props.chat ? "category active" : "category"}>
           <Link to="/">
-            <span class="material-icons">forum</span>
+            <span className="material-icons">forum</span>
           </Link>
         </li>
         <li className={props.contact ? "category active" : "category"}>
           <Link to="/contacts">
-          <span class="material-icons">contacts</span>
+          <span className="material-icons">contacts</span>
           </Link>
         </li>
       </ul>
