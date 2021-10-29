@@ -5,6 +5,7 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
+import NavigationPanel from "./components/navigation/navigationPanel";
 
 function App() {
   // const [socket, setSocket] = useState(io("ws://localhost:9000"));
@@ -16,6 +17,7 @@ function App() {
   // }, [socket]);
   return (
     <div className="App">
+      <NavigationPanel chat/>
       <ChatMenu />
       <Conversation />
     </div>

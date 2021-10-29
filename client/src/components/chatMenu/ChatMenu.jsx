@@ -8,17 +8,9 @@ const MainSearchBar = () => {
   );
 };
 
-const NavigationMenu = () => {
-  // TODO
-  return (
-    <nav></nav>
-  );
-};
-
 const TopBar = () => {
   return (
     <div id="chat-menu-top">
-      <NavigationMenu />
       <MainSearchBar />
     </div>
   )
