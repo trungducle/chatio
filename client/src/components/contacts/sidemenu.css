@@ -58,13 +58,10 @@
 
 .user-fullname {
   font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .user-email {
-  font-size: 0.9rem;
-}
-
-.user-phonenum {
   font-size: 0.9rem;
 }
 

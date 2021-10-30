@@ -8,6 +8,7 @@ import { SignUp } from "./components/signup/SignUp";
 import NavigationPanel from "./components/navigation/NavigationPanel";
 import SideMenu from "./components/contacts/SideMenu";
 import Contact from "./components/contacts/Contact";
+import FriendRequest from "./components/requests/FriendRequest";
 import { AuthContext } from "./contexts/AuthContext";
 import {
   CurrentConversationProvider
@@ -34,8 +35,18 @@ const Contacts = () => {
   return (
     <div className="App">
       <NavigationPanel contact/>
-      <SideMenu />
-      <Contact />
+      <Router>
+        <Switch>
+          <Route path="/contacts/requests">
+            <SideMenu request />
+            <FriendRequest />
+          </Route>
+          <Route exact path="/contacts/">
+            <SideMenu contact />
+            <Contact />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

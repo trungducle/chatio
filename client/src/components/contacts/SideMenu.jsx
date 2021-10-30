@@ -19,13 +19,11 @@ const TopBar = () => {
 const User = (props) => {
   const fullname = props.userfullname;
   const email = props.useremail;
-  const phonenum = props.userphone;
 
   return (
     <div className ="user-search">
       <div className="user-fullname">{fullname}</div>
       <div className="user-email">{email}</div>
-      <div className="user-phonenum">{phonenum}</div>
     </div>
   );
 }
@@ -36,7 +34,7 @@ const Menu = (props) => {
 
   return (
     <Link to={props.lists? "/contacts/" : "/contacts/requests/"}>
-      <div className={props.active? "contact-menu active" : "contact-menu"}>
+      <div className={props.active === "true"? "contact-menu active" : "contact-menu"}>
         {type}
         {props.amount? <span className="badge">{amount}</span> : <span></span>}
       </div>
@@ -44,28 +42,29 @@ const Menu = (props) => {
   );
 }
 
-const SideMenu = () => {
+const SideMenu = (props) => {
+  const type = props.contact? "contact" : "request";
   return (
     <div id="side-menu">
       <TopBar />
       <div className="user-search-list">
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" userphone="0123456789"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" userphone="0123456789"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" userphone="0123456789"/>
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
         <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
       </div>
       <div className="menu">
-        <Menu lists active/>
-        <Menu requests amount="2"/>
+        <Menu lists active={type === "contact" ? "true" : "false"}/>
+        <Menu requests amount="2" active={type === "request" ? "true" : "false"}/>
       </div>
     </div>
   )
