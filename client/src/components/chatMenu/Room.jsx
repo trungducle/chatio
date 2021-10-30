@@ -5,8 +5,8 @@ import "./room.css";
 const Room = (props) => {
   const { setConversationId } = useContext(CurrentConversationContext);
 
-  const showedName = props.name.length > 30
-    ? props.name.substring(0, 30) + "..."
+  const showedName = props.name.length > 25
+    ? props.name.substring(0, 25) + "..."
     : props.name;
   const showedLatestMessage = props.latestMessage.length > 40
     ? props.latestMessage.substring(0, 40) + "..."

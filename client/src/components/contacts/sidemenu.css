@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+#side-menu {
+  margin-left: 5%;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#user-menu-top {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+#user-search-bar {
+  display: flex;
+  justify-items: center;
+  width: 90%;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 20px;
+}
+
+.user-search-list {
+  flex: 15;
+  width: 100%;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+
+.user-search-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.user-search-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.user-search-list::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  border-radius: 10px;
+}
+
+.user-search {
+  text-align: left;
+  margin: 5px auto;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.user-search:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.user-fullname {
+  font-size: 1.2rem;
+}
+
+.user-email {
+  font-size: 0.9rem;
+}
+
+.user-phonenum {
+  font-size: 0.9rem;
+}
+
+.menu {
+  flex: 2;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+.contact-menu {
+  text-align: left;
+  font-weight: bold;
+  margin-right: 8px;
+  cursor: pointer;
+  padding: 20px 10px;
+  border-top: 1px solid #f1f1f1f1;
+  display: flex;
+  align-content: center;
+}
+
+.contact-menu.active {
+  background-color: #a6c8ff;
+}
+
+.contact-menu:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.badge {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+	width: 1.3rem;
+	height: 1.3rem;
+  margin-left: 5px;
+  text-align: center;
+	background: rgba(255, 0, 0, 0.8);
+  color: #fff;
+  font-size: 0.6rem;
+}

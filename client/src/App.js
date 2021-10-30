@@ -6,6 +6,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
 import NavigationPanel from "./components/navigation/NavigationPanel";
+import SideMenu from "./components/contacts/SideMenu";
+import Contact from "./components/contacts/Contact";
 import { AuthContext } from "./contexts/AuthContext";
 import {
   CurrentConversationProvider
@@ -28,6 +30,16 @@ const Home = () => {
   );
 };
 
+const Contacts = () => {
+  return (
+    <div className="App">
+      <NavigationPanel contact/>
+      <SideMenu />
+      <Contact />
+    </div>
+  );
+}
+
 function App() {
   // const [socket, setSocket] = useState(io("ws://localhost:9000"));
   // useEffect(() => {
@@ -47,6 +59,9 @@ function App() {
         </Route>
         <Route path="/signup">
           <SignUp />
+        </Route>
+        <Route path="/contacts">
+          <Contacts />
         </Route>
         <Route path="/">
           {/* {user.authenticated ? <Home /> : <LogIn />} */}
