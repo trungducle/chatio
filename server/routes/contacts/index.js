@@ -1,12 +1,12 @@
 const express = require("express");
-const contacts = express.Router();
+const router = express.Router();
 const { db } = require("../../database");
 // const cors = require("cors");
 
-// contacts.use(cors);
-contacts.use(express.json());
+// router.use(cors);
+router.use(express.json());
 
-contacts.route("/")
+router.route("/")
   .get(async (req, res) => {
     try {
       console.log("Connected to database");
@@ -23,7 +23,7 @@ contacts.route("/")
 
     try {
       console.log("Querying...");
-      const result = await db.none(
+      await db.none(
         "CALL insert_contact($1, $2);",
         [userId, friendId]
       );
@@ -34,7 +34,7 @@ contacts.route("/")
     }
   })
 
-contacts.route("/:userId")
+router.route("/:userId")
   .get(async (req, res) => {
     const { userId } = req.params;
     try {
@@ -64,7 +64,7 @@ contacts.route("/:userId")
     }
   });
 
-contacts.route("/:userId/:friendId")
+router.route("/:userId/:friendId")
   .get(async (req, res) => {
     const { userId, friendId } = req.params;
     try {
@@ -94,4 +94,4 @@ contacts.route("/:userId/:friendId")
     }
   });
 
-module.exports = contacts;
+module.exports = router;

@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { loginCall } from "../../utils/apiCalls";
+import { AuthContext } from "../../contexts/AuthContext";
 import "./login.css";
 
 export const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { isLoading, dispatch } = useContext(AuthContext);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
+    loginCall({ email, password }, dispatch);
   }
 
   return (
@@ -41,7 +44,10 @@ export const LogIn = () => {
             />
           </div>
           <div id="login-button" className="form-field">
-            <button type="submit">Log In</button>
+            <button
+              type="submit"
+              className={isLoading ? "login-loading" : null}
+            >Log In</button>
           </div>
           <div id="forgot-password" className="form-field">
             <a href="#">Forgot Password?</a>

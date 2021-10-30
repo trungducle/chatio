@@ -11,11 +11,17 @@ conversationId.route("/")
   .get(async (req, res) => {
     const { conversationId } = req.params;
     try {
-      const messages = await db.any(
-        "SELECT message_body, sender_id FROM message WHERE conversation_id = $1",
-        [conversationId]
+      // const messages = await db.any(
+      //   "SELECT message_body, sender_id FROM message WHERE conversation_id = $1",
+      //   [conversationId]
+      // );
+      const result = await db.any(
+        "SELECT c.conversation_id, c.name, c.latest_message FROM conversation\
+        JOIN participant p on p.conversation_id = c.conversation_id\
+        WHERE p.user_id = 7;",
+        [userId]
       );
-      res.status(200).json(messages);
+      res.status(200).json(result);
     } catch (err) {
       res.status(500).json(err);
     }

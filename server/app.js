@@ -6,7 +6,7 @@ const http = require("http");
 const users = require("./routes/users");
 const contacts = require("./routes/contacts");
 const conversations = require("./routes/conversations");
-const messages = require("./routes/messages");
+// const messages = require("./routes/messages");
 const login = require("./routes/login");
 const signup = require("./routes/signup");
 
@@ -20,7 +20,7 @@ dotenv.config();
 app.use("/users", users);
 app.use("/contacts", contacts);
 app.use("/conversations", conversations);
-app.use("/messages", messages);
+// app.use("/messages", messages);
 app.use("/login", login);
 app.use("/signup", signup);
 

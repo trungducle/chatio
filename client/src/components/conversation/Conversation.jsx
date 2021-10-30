@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import "./conversation.css";
 
 const Message = (props) => {
@@ -49,6 +50,7 @@ const ConversationTopBar = (props) => (
 const MessageDisplay = () => {
   const [messages, setMessages] = useState([]);
   const messageEndRef = useRef(null);
+  const {user} = useContext(AuthContext);
 
   const appendMessage = (event) => {
     setMessages((prevMessages) => [...prevMessages, event.target.value]);
@@ -70,6 +72,12 @@ const MessageDisplay = () => {
       <Message senderName="alice" />
       <Message senderName="alice" />
       <Message senderName="alice" />
+      {messages.map((msg) => (
+        <Message
+          senderName={`${user.first_name} ${user.last_name}`}
+          own={msg.sender_id === user.user_id}
+        />
+      ))}
       <div
         style={{ float: "left", clear: "both" }}
         ref={messageEndRef}>

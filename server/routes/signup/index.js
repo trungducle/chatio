@@ -7,26 +7,29 @@ signup.use(express.json());
 signup.post("/", async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  const accountColSet = new pgp.helpers.ColumnSet(
-    ["first_name", "last_name", "email", "password"],
-    { table: "account" }
-  );
-
   try {
-    if (emailPattern.test(email)) {
+    const result = await db.any(
+      "SELECT * FROM account WHERE email = $1",
+      [email]
+    );
+
+    if (result.length === 0) {
+      const accountColSet = new pgp.helpers.ColumnSet(
+        ["first_name", "last_name", "email", "password"],
+        { table: "account" }
+      );
+
       await db.none(pgp.helpers.insert({
+        email,
         password,
         first_name: firstName,
         last_name: lastName,
-        email: email,
       }, accountColSet));
+  
+      res.status(200).send("Inserted new user");
     } else {
-      throw "Invalid";
+      res.status(403).send("Email already exists");
     }
-
-    res.status(200).send("Inserted new user");
   } catch (err) {
     res.status(500).json(err);
   }

@@ -4,13 +4,13 @@ const email = require("./email");
 const fullName = require("./fullName");
 const password = require("./password");
 
-const userId = express.Router({ mergeParams: true });
+const router = express.Router({ mergeParams: true });
 
-userId.use("/email", email);
-userId.use("/fullname", fullName);
-userId.use("/password", password);
+router.use("/email", email);
+router.use("/fullname", fullName);
+router.use("/password", password);
 
-userId.route("/")
+router.route("/")
 .get(async (req, res) => {
   const { userId } = req.params;
   try {
@@ -40,4 +40,4 @@ userId.route("/")
   }
 });
 
-module.exports = userId;
+module.exports = router;

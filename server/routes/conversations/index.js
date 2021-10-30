@@ -45,24 +45,33 @@ conversations.route("/")
     }
   });
 
-conversations.get("/:userId", async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const result = await db.any(
-      "SELECT c.conversation_id, c.name, m.latest_message FROM conversation c\
-      JOIN (\
-        SELECT DISTINCT ON (conversation_id) conversation_id, message_body AS latest_message\
-        FROM message ORDER BY conversation_id, created_at desc\
-      ) m ON c.conversation_id = m.conversation_id\
-      JOIN participant p on p.conversation_id = m.conversation_id\
-      WHERE p.user_id = $1;",
-      [userId]
-    );
-
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+conversations.route("/:userId")
+  .get(async (req, res) => {
+    const { userId } = req.params;
+    try {
+      // const result = await db.any(
+      //   "SELECT c.conversation_id, c.name, c.latest_message FROM conversation\
+      //   JOIN participant p on p.conversation_id = c.conversation_id\
+      //   WHERE p.user_id = $1;",
+      //   [userId]
+      // );
+      // const result = await db.any(
+      //   "SELECT c.conversation_id, c.name, m.message_body FROM conversation c\
+      //   JOIN message m on m.conversation_id = c.conversation_id\
+      //   JOIN participant p on p.conversation_id = m.conversation_id\
+      //   WHERE p.user_id = $1;",
+      //   [userId]
+      // );
+      const result = await db.any(
+        "SELECT c.conversation_id, c.name, c.latest_message FROM conversation c\
+        JOIN participant p on p.conversation_id = c.conversation_id\
+        WHERE p.user_id = $1;",
+        [userId]
+      );
+      res.status(200).json(result);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
 
 module.exports = conversations;

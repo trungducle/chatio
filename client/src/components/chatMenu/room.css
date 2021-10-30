@@ -13,14 +13,14 @@ ul {
   background-color: rgb(240, 240, 240);
 }
 
-#user-list {
+#room-list {
   flex: 17;
   width: 100%;
   background-color: #fff;
   overflow-y: scroll;
 }
 
-.user-name {
+.room-name {
   font-weight: bold;
   font-size: 1.2rem;
 }
@@ -29,16 +29,16 @@ ul {
   font-size: 0.9rem;
 }
 
-#user-list::-webkit-scrollbar {
+#room-list::-webkit-scrollbar {
   width: 8px;
 }
 
-#user-list::-webkit-scrollbar-thumb {
+#room-list::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 10px;
 }
 
-#user-list::-webkit-scrollbar-thumb:hover {
+#room-list::-webkit-scrollbar-thumb:hover {
   background: #555; 
   border-radius: 10px;
 }

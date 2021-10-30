@@ -54,6 +54,13 @@ form#login-form button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background-color: #383A59;
+  color: white;
+}
+
+form#login-form button.login-loading {
+  background-color: #5e6296;
+  color: white;
 }
 
 form#login-form #sign-up {

@@ -14,7 +14,7 @@ const Room = (props) => {
 
   return (
     <div className="room" onClick={() => setConversationId(props.id)} key={props.id}>
-      <div className="user-name">{showedName}</div>
+      <div className="room-name">{showedName}</div>
       <div className="latest-message">{showedLatestMessage}</div>
     </div>
   );

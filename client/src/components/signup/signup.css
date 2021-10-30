@@ -58,6 +58,13 @@ form#signup-form button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background-color: #383A59;
+  color: white;
+}
+
+form#signup-form button.signup-loading {
+  background-color: #5e6296;
+  color: white;
 }
 
 form#signup-form #log-in {

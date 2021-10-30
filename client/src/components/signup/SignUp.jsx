@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { signupCall } from "../../utils/apiCalls";
 import "./signup.css";
 
 export const SignUp = () => {
+  const firstName = useRef();
+  const lastName = useRef();
+  const email = useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
+
+  const isSamePassword = () => {
+    return confirmPassword.current.value === password.current.value;
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Done");
+
+    console.log(password.current.value);
+    console.log(confirmPassword.current.value);
+
+    if (!isSamePassword()) {
+      confirmPassword.current.setCustomValidity("Password doesn't match!");
+    } else {
+      setIsLoading(true);
+      signupCall({
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
+        email: email.current.value,
+        password: password.current.value
+      });
+      setIsLoading(false);
+      console.log("New user created");
+    }
   };
 
   return (
@@ -21,6 +50,7 @@ export const SignUp = () => {
                 className="signup-input"
                 name="signup-firstname"
                 placeholder="First Name"
+                ref={firstName}
                 required
               />
             </div>
@@ -31,6 +61,7 @@ export const SignUp = () => {
                 className="signup-input"
                 name="signup-lastname"
                 placeholder="Last Name"
+                ref={lastName}
                 required
               />
             </div>
@@ -43,6 +74,7 @@ export const SignUp = () => {
               className="signup-input"
               name="signup-email"
               placeholder="Email address"
+              ref={email}
               required
             />
           </div>
@@ -55,6 +87,7 @@ export const SignUp = () => {
               placeholder="Password"
               autoComplete="off"
               minLength="8"
+              ref={password}
               required
             />
           </div>
@@ -66,11 +99,15 @@ export const SignUp = () => {
               name="signup-confirm-password"
               placeholder="Confirm Password"
               autoComplete="off"
+              ref={confirmPassword}
               required
             />
           </div>
           <div id="signup-button" className="form-field">
-            <button type="submit">Sign Up</button>
+            <button
+              type="submit"
+              className={isLoading ? "signup-loading" : null}
+            >Sign Up</button>
           </div>
           <div id="log-in" className="form-field">
             Already have an account? <Link to="/login">Log In</Link>

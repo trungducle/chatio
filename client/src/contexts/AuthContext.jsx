@@ -1,29 +1,24 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
+import { loginReducer } from "../reducers/loginReducer";
 
-export const AuthContext = React.createContext();
+const INITIAL_LOGIN_STATE = {
+  user: null,
+  isLoading: false,
+  error: false
+};
 
-export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    userId: "1",
-    authenticated: false
-  });
+export const AuthContext = React.createContext(INITIAL_LOGIN_STATE);
 
-  const login = (userId) => {
-    setUser((user) => ({
-      userId,
-      authenticated: true
-    }));
-  };
-
-  const logout = () => {
-    setUser((user) => ({
-      ...user,
-      authenticated: false
-    }));
-  };
+export const AuthProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN_STATE);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{
+      user: state.user,
+      isLoading: state.isLoading,
+      error: state.error,
+      dispatch
+    }}>
       {children}
     </AuthContext.Provider>
   );
