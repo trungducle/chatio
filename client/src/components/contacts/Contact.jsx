@@ -9,7 +9,7 @@ const Friend = (props) => {
     <div className="friend">
       <div className="friend-info">
         <div className="friend-name">{name}</div>
-        <div class="friend-mail">{email}</div>
+        <div className="friend-mail">{email}</div>
       </div>
       <button className="unfriend-btn">Unfriend</button>
       <button className="contact-friend-btn">Chat Now</button>
