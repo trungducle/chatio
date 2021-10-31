@@ -45,13 +45,13 @@ const MessageBox = () => {
 
         setInput("");
 
-        const moreMessageInfo = await postNewMessage(conversation.id, newMessage);
         setMessages((prevMessages) => [...prevMessages, {
           ...newMessage,
           senderName: `${user.first_name} ${user.last_name}`,
-          messageId: moreMessageInfo.data.message_id
+          messageId: prevMessages.length + 2
         }]);
         
+        await postNewMessage(conversation.id, newMessage);
       }
     }
   }
@@ -64,13 +64,12 @@ const MessageBox = () => {
     (async () => {
       const result = await fetchMessages(conversation.id);
       setMessages(result.data.map((msg) => ({
-        messageId: msg.message_id,
         senderId: msg.sender_id,
         senderName: msg.sender_name,
         messageBody: msg.message_body
       })));
     })();
-  }, [conversation]);
+  }, [conversation.id]);
 
   useEffect(scrollToBottom, [messages]);
 
@@ -82,7 +81,7 @@ const MessageBox = () => {
             senderName={`${msg.senderName}`}
             own={msg.senderId === user.user_id}
             body={msg.messageBody}
-            key={msg.messageId}
+            key={messages.length + 1}
           />
         ))}
         <div

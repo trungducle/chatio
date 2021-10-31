@@ -13,7 +13,6 @@ conversationId.route("/")
     try {
       const messages = await db.any(
         "SELECT\
-          m.message_id,\
           m.sender_id,\
           concat_ws(' ', a.first_name, a.last_name) sender_name,\
           m.message_body\
@@ -31,20 +30,18 @@ conversationId.route("/")
     const { conversationId } = req.params;
     const { messageBody, senderId } = req.body;
     try {
-      const moreInfo = await db.one(
+      await db.one(
         "INSERT INTO message (conversation_id, message_body, sender_id)\
-        VALUES ($1, $2, $3) RETURNING message_id;",
+        VALUES ($1, $2, $3);",
         [conversationId, messageBody, senderId]
       );
-      // console.log(moreInfo);
-      res.status(200).json(moreInfo);
 
       await db.none(
         "UPDATE conversation\
         SET latest_message = $1 WHERE conversation_id = $2",
         [messageBody, conversationId]
-      );
-
+      )
+      res.status(200).send("Inserted a new message");
     } catch (err) {
       res.status(500).json(err);
     }

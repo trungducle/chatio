@@ -37,7 +37,7 @@ export const fetchMessages = async (conversationId) => {
 
 export const postNewMessage = async (conversationId, message) => {
   try {
-    return axios.post(`/messages/${conversationId}`, message);
+    axios.post(`/messages/${conversationId}`, message);
   } catch (err) {
     console.log(err);
   }

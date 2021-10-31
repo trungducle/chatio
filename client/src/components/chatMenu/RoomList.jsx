@@ -17,7 +17,7 @@ const RoomList = () => {
         latestMessage: res.latest_message
       })));
     })();
-  }, [user]);
+  }, [user.user_id]);
 
   return (
     <div id="room-list">
