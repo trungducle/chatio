@@ -68,6 +68,7 @@ export const App = () => {
       <Switch>
         <Route exact path="/">
           {user ? <Home /> : <LogIn />}
+          {/* <Home /> */}
         </Route>
         <Route path="/login">
           {user ? <Redirect to="/" /> : <LogIn />}
@@ -77,6 +78,7 @@ export const App = () => {
         </Route>
         <Route path="/contacts">
           {user ? <Contacts /> : <LogIn />}
+          {/* <Contacts /> */}
         </Route>
       </Switch>
     </Router>

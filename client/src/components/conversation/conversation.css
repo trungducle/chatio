@@ -4,6 +4,7 @@
   flex: 3;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 #room-name {
@@ -19,13 +20,18 @@
   overflow-y: scroll;
 }
 
+#no-conversation {
+  font-size: 50px;
+  color: rgb(201, 198, 198);
+}
+
 .message-item {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
 }
 
-.sender {
+.sender-name {
   text-align: left;
   font-size: 0.8rem;
   margin-left: 5px;

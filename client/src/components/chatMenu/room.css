@@ -13,6 +13,10 @@ ul {
   background-color: rgb(240, 240, 240);
 }
 
+.room.focus {
+  background-color: rgb(179, 179, 245);
+}
+
 #room-list {
   flex: 17;
   width: 100%;

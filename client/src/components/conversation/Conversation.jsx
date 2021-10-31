@@ -1,97 +1,121 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
+import { fetchMessages, postNewMessage } from "../../utils/apiCalls";
 import "./conversation.css";
 
 const Message = (props) => {
   return (
     <div className={props.own ? "message-item own" : "message-item"}>
-      <div className="sender">{props.own ? "" : <strong>Alice</strong>}</div>
-      <p className="message-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur nemo eaque, sunt praesentium nostrum earum excepturi maxime quis exercitationem porro laudantium quae blanditiis distinctio et! Et dicta inventore eaque laborum?</p>
+      <div className="sender-name">{props.own ? "" : props.senderName}</div>
+      <p className="message-text">{props.body}</p>
     </div>
   );
 };
 
-const MessageInput = () => {
+
+const ConversationTopBar = (props) => (
+  <div id="room-name">{props.conversationName}</div>
+);
+
+const MessageBox = () => {
+  const [messages, setMessages] = useState([]);
+  const messageEndRef = useRef(null);
+  const { user } = useContext(AuthContext);
+  const { conversation, setConversation } = useContext(CurrentConversationContext);
   const [input, setInput] = useState("");
 
   const handleChange = (event) => {
     setInput(event.target.value);
   };
 
-  const sendMessage = (event) => {
+  const sendMessage = async (event) => {
     if ((event.type === "keydown" && event.key === "Enter")
       || event.type === "click") {
       if (input) {
+        const newMessage = {
+          senderId: user.user_id,
+          messageBody: input
+        };
+
+        setConversation((prevConv) => ({
+          ...prevConv,
+          latestMessage: input
+        }));
+
         setInput("");
+
+        const moreMessageInfo = await postNewMessage(conversation.id, newMessage);
+        setMessages((prevMessages) => [...prevMessages, {
+          ...newMessage,
+          senderName: `${user.first_name} ${user.last_name}`,
+          messageId: moreMessageInfo.data.message_id
+        }]);
+        
       }
     }
   }
-
-  return (
-    <div id="message-input">
-      <input
-        type="text"
-        value={input}
-        placeholder="Aa"
-        onChange={handleChange}
-        onKeyDown={sendMessage}
-      />
-      <button onClick={sendMessage}>
-        <span className="material-icons">send</span>
-      </button>
-    </div>
-  );
-};
-
-const ConversationTopBar = (props) => (
-  <div id="room-name">{props.name}</div>
-);
-
-const MessageDisplay = () => {
-  const [messages, setMessages] = useState([]);
-  const messageEndRef = useRef(null);
-  const {user} = useContext(AuthContext);
-
-  const appendMessage = (event) => {
-    setMessages((prevMessages) => [...prevMessages, event.target.value]);
-  };
 
   const scrollToBottom = () => {
     messageEndRef.current.scrollIntoView({ behavior: "auto" });
   };
 
+  useEffect(() => {
+    (async () => {
+      const result = await fetchMessages(conversation.id);
+      setMessages(result.data.map((msg) => ({
+        messageId: msg.message_id,
+        senderId: msg.sender_id,
+        senderName: msg.sender_name,
+        messageBody: msg.message_body
+      })));
+    })();
+  }, [conversation]);
+
   useEffect(scrollToBottom, [messages]);
 
   return (
-    <div id="message-display">
-      <Message senderName="alice" />
-      <Message senderName="alice" />
-      <Message senderName="alice" />
-      <Message senderName="me" own />
-      <Message senderName="me" own />
-      <Message senderName="alice" />
-      <Message senderName="alice" />
-      <Message senderName="alice" />
-      {messages.map((msg) => (
-        <Message
-          senderName={`${user.first_name} ${user.last_name}`}
-          own={msg.sender_id === user.user_id}
-        />
-      ))}
-      <div
-        style={{ float: "left", clear: "both" }}
-        ref={messageEndRef}>
+    <>
+      <div id="message-display">
+        {messages.map((msg) => (
+          <Message
+            senderName={`${msg.senderName}`}
+            own={msg.senderId === user.user_id}
+            body={msg.messageBody}
+            key={msg.messageId}
+          />
+        ))}
+        <div
+          style={{ float: "left", clear: "both" }}
+          ref={messageEndRef}>
+        </div>
       </div>
-    </div>
+      <div id="message-input">
+        <input
+          type="text"
+          value={input}
+          placeholder="Aa"
+          onChange={handleChange}
+          onKeyDown={sendMessage}
+        />
+        <button onClick={sendMessage}>
+          <span className="material-icons">send</span>
+        </button>
+      </div>
+    </>
   );
 };
 
 const Conversation = () => {
+  const { conversation } = useContext(CurrentConversationContext);
   return (
     <div id="message-box">
-      <ConversationTopBar name="alice" />
-      <MessageDisplay />
-      <MessageInput />
+      {conversation.id ?
+        <>
+          <ConversationTopBar conversationName={conversation.name} />
+          <MessageBox />
+        </> : <span id="no-conversation">Start chatting now!</span>
+      }
     </div>
   );
 };

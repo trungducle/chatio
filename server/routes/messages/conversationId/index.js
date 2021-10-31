@@ -11,17 +11,18 @@ conversationId.route("/")
   .get(async (req, res) => {
     const { conversationId } = req.params;
     try {
-      // const messages = await db.any(
-      //   "SELECT message_body, sender_id FROM message WHERE conversation_id = $1",
-      //   [conversationId]
-      // );
-      const result = await db.any(
-        "SELECT c.conversation_id, c.name, c.latest_message FROM conversation\
-        JOIN participant p on p.conversation_id = c.conversation_id\
-        WHERE p.user_id = 7;",
-        [userId]
+      const messages = await db.any(
+        "SELECT\
+          m.message_id,\
+          m.sender_id,\
+          concat_ws(' ', a.first_name, a.last_name) sender_name,\
+          m.message_body\
+        FROM account a JOIN message m ON a.user_id = m.sender_id\
+        WHERE conversation_id = $1 ORDER BY m.created_at;",
+        [conversationId]
       );
-      res.status(200).json(result);
+
+      res.status(200).json(messages);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -30,27 +31,35 @@ conversationId.route("/")
     const { conversationId } = req.params;
     const { messageBody, senderId } = req.body;
     try {
-      await db.none(
+      const moreInfo = await db.one(
         "INSERT INTO message (conversation_id, message_body, sender_id)\
-        VALUES ($1, $2, $3)",
+        VALUES ($1, $2, $3) RETURNING message_id;",
         [conversationId, messageBody, senderId]
       );
-      res.status(200).send("Done");
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  })
-  .delete(async (req, res) => {
-    const { conversationId } = req.params;
-    try {
+      // console.log(moreInfo);
+      res.status(200).json(moreInfo);
+
       await db.none(
-        "DELETE FROM message WHERE conversation_id = $1",
-        [conversationId]
+        "UPDATE conversation\
+        SET latest_message = $1 WHERE conversation_id = $2",
+        [messageBody, conversationId]
       );
-      res.status(200).send("Done");
+
     } catch (err) {
       res.status(500).json(err);
     }
   });
+  // .delete(async (req, res) => {
+  //   const { conversationId } = req.params;
+  //   try {
+  //     await db.none(
+  //       "DELETE FROM participant WHERE conversation_id = $1",
+  //       [conversationId]
+  //     );
+  //     res.status(200).send("Done");
+  //   } catch (err) {
+  //     res.status(500).json(err);
+  //   }
+  // });
 
 module.exports = conversationId;

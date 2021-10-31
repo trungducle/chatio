@@ -18,3 +18,27 @@ export const signupCall = async (userInfo) => {
     console.log(err);
   }
 };
+
+export const fetchConversations = async (userId) => {
+  try {
+    return await axios.get(`/conversations/${userId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const fetchMessages = async (conversationId) => {
+  try {
+    return await axios.get(`/messages/${conversationId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const postNewMessage = async (conversationId, message) => {
+  try {
+    return axios.post(`/messages/${conversationId}`, message);
+  } catch (err) {
+    console.log(err);
+  }
+};

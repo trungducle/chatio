@@ -21,7 +21,7 @@ const User = (props) => {
   const email = props.useremail;
 
   return (
-    <div className ="user-search">
+    <div className="user-search">
       <div className="user-fullname">{fullname}</div>
       <div className="user-email">{email}</div>
     </div>
@@ -29,45 +29,45 @@ const User = (props) => {
 }
 
 const Menu = (props) => {
-  const type = props.lists? "Friend List": "Friend Requests";
+  const type = props.lists ? "Friend List" : "Friend Requests";
   const amount = props.amount;
 
   return (
-    <Link to={props.lists? "/contacts/" : "/contacts/requests/"}>
-      <div className={props.active === "true"? "contact-menu active" : "contact-menu"}>
+    <Link to={props.lists ? "/contacts/" : "/contacts/requests/"}>
+      <div className={props.active === "true" ? "contact-menu active" : "contact-menu"}>
         {type}
-        {props.amount? <span className="badge">{amount}</span> : <span></span>}
+        {props.amount ? <span className="badge">{amount}</span> : <span></span>}
       </div>
     </Link>
   );
 }
 
 const SideMenu = (props) => {
-  const type = props.contact? "contact" : "request";
+  const type = props.contact ? "contact" : "request";
   return (
     <div id="side-menu">
       <TopBar />
       <div className="user-search-list">
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com"/>
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
       </div>
       <div className="menu">
-        <Menu lists active={type === "contact" ? "true" : "false"}/>
-        <Menu requests amount="2" active={type === "request" ? "true" : "false"}/>
+        <Menu lists active={type === "contact" ? "true" : "false"} />
+        <Menu requests amount="2" active={type === "request" ? "true" : "false"} />
       </div>
     </div>
   )
 };
 
-export default SideMenu; 
+export default SideMenu;

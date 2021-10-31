@@ -1,35 +1,33 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import axios from "axios";
+import { fetchConversations } from "../../utils/apiCalls";
 import Room from "./Room";
 import "./room.css";
 
 const RoomList = () => {
-  const [conversations, setConversations] = useState([]);
+  const [roomList, setRoomList] = useState([]);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    const getConversations = async () => {
-      try {
-        const result = await axios.get(`/conversations/${user.user_id}`);
-        const resultOnDisplay = result.data.map((res) => ({
-          id: res.conversation_id,
-          name: res.name,
-          latestMessage: res.latest_message
-        }));
-        setConversations(resultOnDisplay);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getConversations();
-  }, []);
-
+    (async () => {
+      const result = await fetchConversations(user.user_id);
+      setRoomList(result.data.map((res) => ({
+        id: res.conversation_id,
+        name: res.name,
+        latestMessage: res.latest_message
+      })));
+    })();
+  }, [user]);
 
   return (
     <div id="room-list">
-      {conversations.map((conv) => (
-        <Room name={conv.name} latestMessage={conv.latestMessage} key={conv.id} />
+      {roomList.map((room) => (
+        <Room
+          name={room.name}
+          latestMessage={room.latestMessage}
+          key={room.id}
+          id={room.id}
+        />
       ))}
     </div>
   );
