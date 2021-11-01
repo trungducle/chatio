@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./navigationPanel.css";
 
 const NavigationPanel = (props) => {
+
   return (
     <div id="navigation-panel">
       <ul>
@@ -13,7 +14,7 @@ const NavigationPanel = (props) => {
         </li>
         <li className={props.contact ? "category active" : "category"}>
           <Link to="/contacts">
-          <span className="material-icons">contacts</span>
+            <span className="material-icons">contacts</span>
           </Link>
         </li>
       </ul>

@@ -30,7 +30,7 @@ conversationId.route("/")
     const { conversationId } = req.params;
     const { messageBody, senderId } = req.body;
     try {
-      await db.one(
+      await db.none(
         "INSERT INTO message (conversation_id, message_body, sender_id)\
         VALUES ($1, $2, $3);",
         [conversationId, messageBody, senderId]
@@ -40,7 +40,8 @@ conversationId.route("/")
         "UPDATE conversation\
         SET latest_message = $1 WHERE conversation_id = $2",
         [messageBody, conversationId]
-      )
+      );
+
       res.status(200).send("Inserted a new message");
     } catch (err) {
       res.status(500).json(err);

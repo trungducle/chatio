@@ -3,7 +3,7 @@ import { CurrentConversationContext } from "../../contexts/CurrentConversationCo
 import "./room.css";
 
 const Room = (props) => {
-  const { conversation, setConversation } = useContext(CurrentConversationContext);
+  // const { conversation, setConversation } = useContext(CurrentConversationContext);
   // const [latestMessage, setLatestMessage] = useState(conversation.latestMessage);
   const MAX_NAME_LENGTH = 25;
   const MAX_LATEST_MESSAGE_LENGTH = 40;
@@ -23,13 +23,7 @@ const Room = (props) => {
   //   ? latestMessage.substring(0, MAX_LATEST_MESSAGE_LENGTH) + "..."
   //   : latestMessage;
 
-  const handleClick = () => {
-    setConversation({
-      id: props.id,
-      name: props.name,
-      latestMessage: props.latestMessage
-    });
-  };
+  
 
   // useEffect(() => {
   //   setLatestMessage(conversation.latestMessage);
@@ -38,7 +32,7 @@ const Room = (props) => {
   return (
     <div
       className={props.isFocused ? "room focus" : "room"}
-      onClick={handleClick}
+      onClick={props.handleClick}
     >
       <div className="room-name">{display(props.name, MAX_NAME_LENGTH)}</div>
       <div className="latest-message">{display(props.latestMessage, MAX_LATEST_MESSAGE_LENGTH)}</div>

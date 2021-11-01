@@ -13,7 +13,6 @@ const Message = (props) => {
   );
 };
 
-
 const ConversationTopBar = (props) => (
   <div id="room-name">{props.conversationName}</div>
 );
@@ -48,7 +47,7 @@ const MessageBox = () => {
         setMessages((prevMessages) => [...prevMessages, {
           ...newMessage,
           senderName: `${user.first_name} ${user.last_name}`,
-          messageId: prevMessages.length + 2
+          messageId: prevMessages.length + 1
         }]);
         
         await postNewMessage(conversation.id, newMessage);
@@ -81,7 +80,7 @@ const MessageBox = () => {
             senderName={`${msg.senderName}`}
             own={msg.senderId === user.user_id}
             body={msg.messageBody}
-            key={messages.length + 1}
+            key={messages.indexOf(msg)}
           />
         ))}
         <div

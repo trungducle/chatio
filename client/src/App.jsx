@@ -1,8 +1,8 @@
 import ChatMenu from "./components/chatMenu/ChatMenu";
 import Conversation from "./components/conversation/Conversation";
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import "./App.css";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
 import NavigationPanel from "./components/navigation/NavigationPanel";
@@ -53,15 +53,28 @@ const Contacts = () => {
 };
 
 export const App = () => {
-  // const [socket, setSocket] = useState(io("ws://localhost:9000"));
-  // useEffect(() => {
-  //   socket.on("notify", (message) => {
-  //     console.log(message);
-  //   });
-  //   return () => 0; 
-  // }, [socket]);
-
   const { user } = useContext(AuthContext);
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:9000");
+    return () => {
+      socket.current.close();
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.current.on("notify", (message) => {
+      console.log(message);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.current.emit("send userId", user?.user_id);
+    socket.current.on("get users", (users) => {
+      console.log(users);
+    });
+  }, [user, socket]);
 
   return (
     <Router>

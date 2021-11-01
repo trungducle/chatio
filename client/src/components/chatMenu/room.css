@@ -5,16 +5,17 @@ ul {
 .room {
   text-align: left;
   margin: 5px auto;
-  cursor: pointer;
+  /* cursor: pointer; */
   padding: 10px 10px;
 }
 
 .room:hover {
   background-color: rgb(240, 240, 240);
+  cursor: pointer;
 }
 
 .room.focus {
-  background-color: rgb(179, 179, 245);
+  background-color: rgb(135, 135, 245);
 }
 
 #room-list {
