@@ -50,8 +50,12 @@ conversations.route("/:userId")
     const { userId } = req.params;
     try {
       const result = await db.any(
-        "SELECT c.conversation_id, c.name, c.latest_message FROM conversation c\
-        JOIN participant p on p.conversation_id = c.conversation_id\
+        "SELECT\
+          c.conversation_id, c.name, c.latest_message, c.latest_sender latest_sender_id,\
+          concat_ws(' ', a.first_name, a.last_name) latest_sender_name\
+        FROM conversation c\
+        JOIN account a ON c.latest_sender = a.user_id\
+        JOIN participant p ON p.conversation_id = c.conversation_id\
         WHERE p.user_id = $1;",
         [userId]
       );

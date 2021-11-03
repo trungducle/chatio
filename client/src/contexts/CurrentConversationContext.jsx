@@ -6,7 +6,11 @@ export const CurrentConversationProvider = ({ children }) => {
   const [conversation, setConversation] = useState({
     id: null,
     name: "",
-    latestMessage: ""
+    latestMessage: {
+      body: "",
+      senderId: null,
+      senderName: ""
+    }
   });
 
   return (

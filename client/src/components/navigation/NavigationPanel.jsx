@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./navigationPanel.css";
 
 const NavigationPanel = (props) => {
-
   return (
     <div id="navigation-panel">
       <ul>

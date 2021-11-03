@@ -47,10 +47,12 @@ export const LogIn = () => {
             <button
               type="submit"
               className={isLoading ? "login-loading" : null}
-            >Log In</button>
+            >
+              Log In
+            </button>
           </div>
           <div id="forgot-password" className="form-field">
-            <a href="#">Forgot Password?</a>
+            <Link to="/login">Forgot Password?</Link>
           </div>
           <div id="sign-up" className="form-field">
             Don't have an account? <Link to="/signup">Sign Up</Link>

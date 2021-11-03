@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
+import socket from "../../socket";
 import { fetchMessages, postNewMessage } from "../../utils/apiCalls";
 import "./conversation.css";
 
@@ -39,7 +40,11 @@ const MessageBox = () => {
 
         setConversation((prevConv) => ({
           ...prevConv,
-          latestMessage: input
+          latestMessage: {
+            senderId: user.user_id,
+            senderName: `${user.first_name} ${user.last_name}`,
+            body: input
+          }
         }));
 
         setInput("");
@@ -49,14 +54,16 @@ const MessageBox = () => {
           senderName: `${user.first_name} ${user.last_name}`,
           messageId: prevMessages.length + 1
         }]);
-        
+
+        socket.emit("send message", {
+          ...newMessage,
+          senderName: `${user.first_name} ${user.last_name}`,
+          conversationId: conversation.id
+        });
+
         await postNewMessage(conversation.id, newMessage);
       }
     }
-  }
-
-  const scrollToBottom = () => {
-    messageEndRef.current.scrollIntoView({ behavior: "auto" });
   };
 
   useEffect(() => {
@@ -70,7 +77,19 @@ const MessageBox = () => {
     })();
   }, [conversation.id]);
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(() => {
+    socket.on("send message", (msg) => {
+      setMessages((prevMessages) => [...prevMessages, {
+        senderId: msg.senderId,
+        senderName: msg.senderName,
+        messageBody: msg.messageBody
+      }]);
+    });
+  }, []);
+
+  useEffect(() => {
+    messageEndRef.current.scrollIntoView({ behavior: "auto" });
+  }, [messages]);
 
   return (
     <>
@@ -88,6 +107,7 @@ const MessageBox = () => {
           ref={messageEndRef}>
         </div>
       </div>
+
       <div id="message-input">
         <input
           type="text"

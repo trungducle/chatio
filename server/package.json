@@ -15,8 +15,10 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.13",
     "pg": "^8.7.1",
-    "pg-cursor": "^2.7.1",
     "pg-promise": "^10.11.1",
     "socket.io": "^4.3.0"
+  },
+  "devDependencies": {
+    "pg-cursor": "^2.7.1"
   }
 }

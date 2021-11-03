@@ -1,11 +1,19 @@
 import axios from "axios";
 import { loginStart, loginSuccess, loginFailure } from "../actions/loginActions";
+import socket from "../socket";
 
 export const loginCall = async (userCredentials, dispatch) => {
   dispatch(loginStart());
   try {
     const result = await axios.post("/login", userCredentials);
     dispatch(loginSuccess(result.data));
+    socket.auth = {
+      userInfo: {
+        userId: result.data.user_id,
+        name: `${result.data.first_name} ${result.data.last_name}`
+      }
+    };
+    socket.connect();
   } catch (err) {
     dispatch(loginFailure(err));
   }

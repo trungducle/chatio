@@ -38,8 +38,9 @@ conversationId.route("/")
 
       await db.none(
         "UPDATE conversation\
-        SET latest_message = $1 WHERE conversation_id = $2",
-        [messageBody, conversationId]
+        SET latest_message = $1, latest_sender = $2\
+        WHERE conversation_id = $3",
+        [messageBody, senderId, conversationId]
       );
 
       res.status(200).send("Inserted a new message");
