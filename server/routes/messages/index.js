@@ -1,8 +1,17 @@
 const express = require("express");
-const conversationId = require("./conversationId");
+const {
+  getMessages,
+  postNewMessage,
+  searchMessage
+} = require("../../controllers/messageController");
 
-const messages = express.Router();
+const messageRouter = express.Router();
+messageRouter.use(express.json());
 
-messages.use("/:conversationId", conversationId);
+messageRouter.route("/:conversationId")
+  .get(getMessages)
+  .post(postNewMessage);
 
-module.exports = messages;
+messageRouter.get("/:conversationId/search", searchMessage);
+
+module.exports = messageRouter;

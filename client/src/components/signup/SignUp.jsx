@@ -110,7 +110,7 @@ export const SignUp = () => {
             >Sign Up</button>
           </div>
           <div id="log-in" className="form-field">
-            Already have an account? <Link to="/login">Log In</Link>
+            Already have an account? <Link to="/">Log In</Link>
           </div>
         </form>
       </div>

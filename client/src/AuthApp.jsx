@@ -20,7 +20,6 @@ const Home = () => (
   </>
 );
 
-
 const Contacts = () => {
   return (
     <>

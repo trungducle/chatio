@@ -1,37 +1,39 @@
-ul {
-  list-style-type: none;
-}
-
 .room {
   text-align: left;
   margin: 5px auto;
-  /* cursor: pointer; */
   padding: 10px 10px;
 }
 
 .room:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: #44475a;
   cursor: pointer;
 }
 
 .room.focus {
-  background-color: rgb(135, 135, 245);
+  background-color: #44475a;
 }
 
 #room-list {
   flex: 17;
   width: 100%;
-  background-color: #fff;
+  background-color: #282A36;
   overflow-y: scroll;
 }
 
 .room-name {
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-weight: 450;
+  font-size: 1.05rem;
+  color: white;
 }
 
 .latest-message {
   font-size: 0.9rem;
+  color: #A3A6AB;
+}
+
+.new-message {
+  font-weight: bold;
+  color: white;
 }
 
 #room-list::-webkit-scrollbar {

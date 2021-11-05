@@ -5,15 +5,15 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-left: 1px solid rgb(197, 193, 193);
+  background-color: #44475a;
+  border-left: 1px solid #44475a;
 }
 
 #room-name {
   padding: 20px;
-  background-color: #fff;
-  color: #000;
+  background-color: #282A36;
+  color: white;
   font-weight: bold;
-  box-shadow: 0px 1px 5px 1px #f1f1f1f1;
 }
 
 #message-display {
@@ -24,7 +24,7 @@
 
 #no-conversation {
   font-size: 50px;
-  color: rgb(201, 198, 198);
+  color: rgb(145, 145, 145);
 }
 
 .message-item {
@@ -44,9 +44,9 @@
   border-radius: 20px;
   padding: 10px;
   margin: 5px;
-  background-color: #f1f1f1f1;
+  background-color: #282A36;
   max-width: 300px;
-  color: rgb(10, 9, 9);
+  color: white;
   text-align: left;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .message-item.own .message-text {
-  background-color: rgb(44, 44, 255);
+  background-color: #1988f0;
   color: rgb(245, 244, 244);
 }
 
@@ -72,10 +72,11 @@
   height: 3.5rem;
   box-sizing: border-box;
   backdrop-filter: blur(10px);
+  background-color: #282A36;
 }
 
 #message-input input {
-  background-color: #f1f1f1f1;
+  background-color: #44475a;
   border: none;
   padding: 0 1rem;
   flex-grow: 1;
@@ -83,8 +84,9 @@
   margin: 0.25rem;
   max-width: 90%;
   width: 90%;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-family: inherit;
+  color: white;
 }
 
 #message-input input:focus {
@@ -92,15 +94,19 @@
 }
 
 #message-input button {
-  padding: 0 1rem;
+  padding: 6px;
   margin: 0.25rem;
   background: none;
   border: none;
   cursor: pointer;
 }
 
-.material-icons {
-  font-size: 2rem;
-  color: rgb(44, 44, 255);
+#message-input button:hover {
+  background-color: #44475a;
+  border-radius: 50%;
 }
 
+.material-icons {
+  font-size: 2rem;
+  color: #1988f0;
+}

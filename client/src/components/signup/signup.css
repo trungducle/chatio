@@ -1,5 +1,5 @@
 #signup-wrapper {
-  background-color: #e7e7e7;
+  background-color: #282a36;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -10,8 +10,9 @@
 #signup-box {
   width: 25%;
   padding: 15px;
-  background: white;
+  background: #44475a;
   border-radius: 10px;
+  color: white
 }
 
 .app-name {
@@ -34,17 +35,22 @@ form#signup-form #signup-name > * {
 
 form#signup-form input.signup-input {
   border: none;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgb(233, 229, 229);
+  background-color: #44475a;
+  color: white;
   height: 30px;
   margin: 10px auto;
   width: 100%;
   display: flex;
   align-items: center;
   font-size: 15px;
+  cursor: auto;
 }
 
 form#signup-form input.signup-input::placeholder {
   font-size: 15px;
+  color: #A3A6AB;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 form#signup-form input.signup-input:focus {
@@ -58,16 +64,20 @@ form#signup-form button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #383A59;
+  background-color: #0D8BF1;
   color: white;
 }
 
 form#signup-form button.signup-loading {
-  background-color: #5e6296;
+  background-color: #45a4f1;
   color: white;
 }
 
 form#signup-form #log-in {
   font-size: 13px;
   text-align: center;  
+}
+
+a {
+  color: #8AB4F8;
 }

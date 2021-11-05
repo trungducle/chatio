@@ -1,40 +1,10 @@
 const express = require("express");
-const router = express.Router();
-const { db } = require("../../database");
-// const cors = require("cors");
+const contactRouter = express.Router();
+const { db } = require("../../config/database");
 
-// router.use(cors);
-router.use(express.json());
+contactRouter.use(express.json());
 
-router.route("/")
-  .get(async (req, res) => {
-    try {
-      console.log("Connected to database");
-      console.log("Querying to database...");
-      const result = await db.any("SELECT * FROM contact");
-      console.log("Query done");
-      res.status(200).json(result);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  })
-  .post(async (req, res) => {
-    const { userId, friendId } = req.body;
-
-    try {
-      console.log("Querying...");
-      await db.none(
-        "CALL insert_contact($1, $2);",
-        [userId, friendId]
-      );
-      console.log("Query done");
-      res.status(200).send("Done");
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  })
-
-router.route("/:userId")
+contactRouter.route("/:userId")
   .get(async (req, res) => {
     const { userId } = req.params;
     try {
@@ -64,7 +34,7 @@ router.route("/:userId")
     }
   });
 
-router.route("/:userId/:friendId")
+contactRouter.route("/:userId/:friendId")
   .get(async (req, res) => {
     const { userId, friendId } = req.params;
     try {
@@ -94,4 +64,4 @@ router.route("/:userId/:friendId")
     }
   });
 
-module.exports = router;
+module.exports = contactRouter;

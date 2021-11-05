@@ -52,7 +52,7 @@ export const LogIn = () => {
             </button>
           </div>
           <div id="forgot-password" className="form-field">
-            <Link to="/login">Forgot Password?</Link>
+            <Link to="/">Forgot Password?</Link>
           </div>
           <div id="sign-up" className="form-field">
             Don't have an account? <Link to="/signup">Sign Up</Link>

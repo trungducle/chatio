@@ -13,7 +13,7 @@ export const App = () => {
         <CurrentConversationProvider>
           <AuthApp />
         </CurrentConversationProvider>
-        ) : <UnauthApp />}
+      ) : <UnauthApp />}
     </div>
   );
 };

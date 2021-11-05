@@ -9,6 +9,7 @@ import "./room.css";
 const RoomList = () => {
   const [roomList, setRoomList] = useState([]);
   const [roomIdOnFocus, setRoomIdOnFocus] = useState(-1);
+  // const [updateState, setUpdateState] = useState(new Map());
   const { user } = useContext(AuthContext);
   const { conversation, setConversation } = useContext(CurrentConversationContext);
 

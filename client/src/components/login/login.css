@@ -1,5 +1,5 @@
 #login-wrapper {
-  background-color: #e7e7e7;
+  background-color: #282a36;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -10,8 +10,9 @@
 #login-box {
   width: 25%;
   padding: 15px;
-  background: white;
+  background: #44475a;
   border-radius: 10px;
+  color: white
 }
 
 .app-name {
@@ -25,7 +26,9 @@ form#login-form .form-field {
 
 form#login-form input.login-input {
   border: none;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgb(233, 229, 229);
+  background-color: #44475a;
+  color: white;
   height: 30px;
   margin: 10px auto;
   width: 100%;
@@ -37,13 +40,15 @@ form#login-form input.login-input {
 
 form#login-form input.login-input::placeholder {
   font-size: 15px;
+  color: #A3A6AB;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 form#login-form input.login-input:focus {
   outline: none;
 }
 
-form#login-form #forgot-password {
+form#login-form #forgot-password, #sign-up {
   font-size: 13px;
   text-align: center;
 }
@@ -55,16 +60,15 @@ form#login-form button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #383A59;
+  background-color: #0D8BF1;
   color: white;
 }
 
 form#login-form button.login-loading {
-  background-color: #5e6296;
+  background-color: #45a4f1;
   color: white;
 }
 
-form#login-form #sign-up {
-  font-size: 13px;
-  text-align: center;  
+a {
+  color: #8AB4F8;
 }

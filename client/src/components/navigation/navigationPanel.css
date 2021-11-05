@@ -4,9 +4,12 @@
   margin: 0;
   padding: 0;
   width: 5%;
-  background-color: #242424;
+  background-color: #44475a;
   position: fixed;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 ul {
@@ -26,11 +29,21 @@ li.active {
   border-left: 3px solid #5294ff;
 }
 
-
 li:hover {
-  background-color: #555;
+  background-color: #282A36;
 }
 
-.category .material-icons {
+.material-icons {
   color: #fff;
+}
+
+button#logout-btn {
+  background-color: #44475a;
+  padding: 20px 16px;
+  border: none;
+}
+
+button#logout-btn:hover {
+  background-color: #282A36;
+  cursor: pointer;
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { loginStart, loginSuccess, loginFailure } from "../actions/loginActions";
+import { logoutFailure, logoutStart, logoutSuccess } from "../actions/logoutActions";
 import socket from "../socket";
 
 export const loginCall = async (userCredentials, dispatch) => {
@@ -24,6 +25,18 @@ export const signupCall = async (userInfo) => {
     await axios.post("/signup", userInfo);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const logoutCall = async (userId, dispatch) => {
+  dispatch(logoutStart());
+  try {
+    console.log(`userId at logoutCall: ${userId}`);
+    await axios.post("/logout", { userId });
+    dispatch(logoutSuccess());
+
+  } catch (err) {
+    dispatch(logoutFailure(err));
   }
 };
 
