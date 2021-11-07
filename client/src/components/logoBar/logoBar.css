@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+.logoBar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.logo {
+  height: 100%;
+}
+
+.new-conversation {
+  cursor: pointer;
+  user-select: none;
+}

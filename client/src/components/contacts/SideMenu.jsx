@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
 
 const UserSearchBar = () => {
@@ -11,6 +12,7 @@ const UserSearchBar = () => {
 const TopBar = () => {
   return (
     <div id="user-menu-top">
+      <LogoBar />
       <UserSearchBar />
     </div>
   )

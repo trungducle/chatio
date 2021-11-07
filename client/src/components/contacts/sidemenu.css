@@ -12,6 +12,7 @@
 #user-menu-top {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   padding: 10px;
   background-color: #282A36;

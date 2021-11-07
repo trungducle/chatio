@@ -15,7 +15,12 @@ const Message = (props) => {
 };
 
 const ConversationTopBar = (props) => (
-  <div id="room-name">{props.conversationName}</div>
+  <div className="conversation-top">
+    <div id="room-name">{props.conversationName}</div>
+    <button id="leave-btn">Leave</button>
+    <button id="customize-btn">Customize</button>
+  </div>
+  
 );
 
 const MessageBox = () => {

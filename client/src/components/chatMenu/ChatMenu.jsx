@@ -1,5 +1,6 @@
 import React from "react";
 import RoomList from "./RoomList";
+import LogoBar from "../logoBar/logoBar";
 import "./chatMenu.css";
 
 const MainSearchBar = () => {
@@ -11,6 +12,7 @@ const MainSearchBar = () => {
 const TopBar = () => {
   return (
     <div id="chat-menu-top">
+      <LogoBar />
       <MainSearchBar />
     </div>
   )
