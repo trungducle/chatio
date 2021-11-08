@@ -9,3 +9,7 @@ Content-Type: application/json
     "email": "testemail@test.com",
     "password": "test"
 }
+
+###
+
+PUT http://localhost:8000/update

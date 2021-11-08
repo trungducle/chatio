@@ -1,13 +1,15 @@
 import axios from "axios";
-import { loginStart, loginSuccess, loginFailure } from "../actions/loginActions";
-import { logoutFailure, logoutStart, logoutSuccess } from "../actions/logoutActions";
+import {
+  loginStart, loginFailure, loggedIn,
+  logoutStart, logoutFailure, notLoggedIn
+} from "../actions/authActions";
 import socket from "../socket";
 
 export const loginCall = async (userCredentials, dispatch) => {
   dispatch(loginStart());
   try {
     const result = await axios.post("/login", userCredentials);
-    dispatch(loginSuccess(result.data));
+    dispatch(loggedIn(result.data));
     socket.auth = {
       userInfo: {
         userId: result.data.user_id,
@@ -28,13 +30,12 @@ export const signupCall = async (userInfo) => {
   }
 };
 
-export const logoutCall = async (userId, dispatch) => {
+export const logoutCall = async ({ userId }, dispatch) => {
   dispatch(logoutStart());
   try {
-    console.log(`userId at logoutCall: ${userId}`);
     await axios.post("/logout", { userId });
-    dispatch(logoutSuccess());
-
+    dispatch(notLoggedIn());
+    socket.disconnect();
   } catch (err) {
     dispatch(logoutFailure(err));
   }

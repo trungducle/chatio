@@ -18,11 +18,11 @@ const TopBar = () => {
   )
 }
 
-const ChatMenu = () => {
+const ChatMenu = (props) => {
   return (
     <div id="chat-menu">
       <TopBar />
-      <RoomList />
+      <RoomList roomList={props.roomList} setRoomList={props.setRoomList} />
     </div>
   )
 };

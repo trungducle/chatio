@@ -7,7 +7,6 @@ import "./login.css";
 export const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const { isLoading, dispatch } = useContext(AuthContext);
 
   const handleSubmit = (e) => {

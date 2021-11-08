@@ -1,25 +1,17 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext";
-import { logoutReducer } from "../../reducers/logoutReducer";
 import { logoutCall } from "../../utils/apiCalls";
 import "./navigationPanel.css";
 
 const LogoutButton = () => {
-  const { user } = useContext(AuthContext);
-  const [state, dispatch] = useReducer(logoutReducer, {
-    user,
-    isLoading: false,
-    error: false
-  });
+  const { user, dispatch } = useContext(AuthContext);
   const history = useHistory();
 
   const handleClick = () => {
-    console.log(`userId at LogoutButton: ${user.user_id}`);
-    logoutCall(user.user_id, dispatch);
+    logoutCall({ userId: user.user_id }, dispatch);
     history.push("/");
-    console.log(user);
   };
 
   return (

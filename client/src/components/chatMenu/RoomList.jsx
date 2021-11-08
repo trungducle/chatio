@@ -6,30 +6,30 @@ import Room from "./Room";
 import socket from "../../socket";
 import "./room.css";
 
-const RoomList = () => {
-  const [roomList, setRoomList] = useState([]);
+const RoomList = (props) => {
+  // const [roomList, setRoomList] = useState([]);
   const [roomIdOnFocus, setRoomIdOnFocus] = useState(-1);
   // const [updateState, setUpdateState] = useState(new Map());
   const { user } = useContext(AuthContext);
   const { conversation, setConversation } = useContext(CurrentConversationContext);
 
-  // fetch conversations on first load
-  useEffect(() => {
-    (async () => {
-      const result = await fetchConversations(user.user_id);
-      const convList = result.data.map((res) => ({
-        id: res.conversation_id,
-        name: res.name,
-        latestMessage: {
-          senderId: res.latest_sender_id,
-          senderName: res.latest_sender_name,
-          body: res.latest_message
-        }
-      }));
-      setRoomList(convList);
-      socket.emit("join rooms", convList.map((conv) => conv.id));
-    })();
-  }, []);
+  // // fetch conversations on first load
+  // useEffect(() => {
+  //   (async () => {
+  //     const result = await fetchConversations(user.user_id);
+  //     const convList = result.data.map((res) => ({
+  //       id: res.conversation_id,
+  //       name: res.name,
+  //       latestMessage: {
+  //         senderId: res.latest_sender_id,
+  //         senderName: res.latest_sender_name,
+  //         body: res.latest_message
+  //       }
+  //     }));
+  //     setRoomList(convList);
+  //     socket.emit("join rooms", convList.map((conv) => conv.id));
+  //   })();
+  // }, []);
   
   // update name and latest message on receiving a new message
   useEffect(() => {
@@ -45,7 +45,7 @@ const RoomList = () => {
         }));
       }
       
-      setRoomList((prevList) => prevList.map((room) => {
+      props.setRoomList((prevList) => prevList.map((room) => {
         if (room.id === msg.conversationId) {
           const { latestMessage } = room;
           latestMessage.senderId = msg.senderId;
@@ -59,7 +59,7 @@ const RoomList = () => {
   
   // update name and latest message on sending a new message
   useEffect(() => {
-    setRoomList((prevList) => prevList.map((room) => {
+    props.setRoomList((prevList) => prevList.map((room) => {
       if (room.id === conversation.id) {
         const { latestMessage } = room;
         latestMessage.senderId = conversation.latestMessage.senderId;
@@ -83,7 +83,7 @@ const RoomList = () => {
 
   return (
     <div id="room-list">
-      {roomList.map((room) => (
+      {props.roomList.map((room) => (
         <Room
           name={room.name}
           latestMessage={room.latestMessage.body}

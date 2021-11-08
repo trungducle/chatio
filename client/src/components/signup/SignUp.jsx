@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { signupCall } from "../../utils/apiCalls";
 import "./signup.css";
 
@@ -9,8 +10,11 @@ export const SignUp = () => {
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
+  const history = useHistory();
 
   const isSamePassword = () => {
+    console.log(`password: ${password.current.value}`);
+    console.log(`retyped password: ${confirmPassword.current.value}`);
     return confirmPassword.current.value === password.current.value;
   };
 
@@ -34,6 +38,7 @@ export const SignUp = () => {
       });
       setIsLoading(false);
       console.log("New user created");
+      history.push("/");
     }
   };
 
