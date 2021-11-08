@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { fetchContacts } from "../../utils/apiCalls";
+import { AuthContext } from "../../contexts/AuthContext";
 import "./contact.css";
 
 const Friend = (props) => {
@@ -18,16 +20,27 @@ const Friend = (props) => {
 }
 
 const Contact = () => {
-  return(
+  const [contacts, setContacts] = useState([]);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    (async () => {
+      const result = await fetchContacts(user.user_id);
+      setContacts(result.data.map((contact) => ({
+        name: contact.full_name
+      })));
+    })();
+  }, []);
+
+  return (
     <div id="contact-box">
       <div id="box-title">Friend List</div>
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Friend name="Nguyen Tien Dat" email="test@gmail.com" />
+      {contacts.map((contact) => (
+        <Friend
+          name={contact.name}
+          key={contacts.indexOf(contact)}
+        />
+      ))}
     </div>
   );
 }

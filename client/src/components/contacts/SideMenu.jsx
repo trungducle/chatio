@@ -1,22 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchUsers } from "../../utils/apiCalls";
 import { Link } from "react-router-dom";
 import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
-
-const UserSearchBar = () => {
-  return (
-    <input id="user-search-bar" type="text" placeholder="Search..." />
-  );
-};
-
-const TopBar = () => {
-  return (
-    <div id="user-menu-top">
-      <LogoBar />
-      <UserSearchBar />
-    </div>
-  )
-}
 
 const User = (props) => {
   const fullname = props.userfullname;
@@ -46,23 +32,46 @@ const Menu = (props) => {
 
 const SideMenu = (props) => {
   const type = props.contact ? "contact" : "request";
+  const [input, setInput] = useState('');
+  const [users, setUsers] = useState([]);
+
+  const handleChange = (event) => {
+    setInput(event.target.value);
+  }
+
+  useEffect(() => {
+    if (input) {
+      console.log(input);
+      (async () => {
+        const result = await fetchUsers(input);
+        setUsers(result.data.map((user) => ({
+          userfullname: user.full_name
+        })));
+      })();
+    } else {
+      setUsers([]);
+    }
+  }, [input]);
+
   return (
     <div id="side-menu">
-      <TopBar />
+      <div id="user-menu-top">
+        <LogoBar />
+        <input
+          id="user-search-bar"
+          type="text"
+          placeholder="Search..."
+          value={input}
+          onChange={handleChange}
+        />
+      </div>
       <div className="user-search-list">
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
-        <User userfullname="Nguyễn Tiến Đạt" useremail="test@email.com" />
+        {users.map((user) => (
+          <User
+            userfullname={user.userfullname}
+            key={users.indexOf(user)}
+          />
+        ))}
       </div>
       <div className="menu">
         <Menu lists active={type === "contact" ? "true" : "false"} />
