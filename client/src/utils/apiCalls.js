@@ -63,3 +63,11 @@ export const postNewMessage = async (conversationId, message) => {
     console.log(err);
   }
 };
+
+export const fetchUsers = async(userName) => {
+  try {
+    return await axios.get(`/users/search?value=${userName}`);
+  } catch (err) {
+    console.log(err);
+  }
+}
