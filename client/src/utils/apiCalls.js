@@ -71,3 +71,11 @@ export const fetchUsers = async(userName) => {
     console.log(err);
   }
 }
+
+export const fetchContacts = async(userId) => {
+  try {
+    return await axios.get(`/contacts/${userId}`);
+  } catch (err) {
+    console.log(err);
+  }
+}
