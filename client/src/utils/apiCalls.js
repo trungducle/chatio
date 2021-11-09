@@ -80,3 +80,11 @@ export const fetchContacts = async(userId) => {
     console.log(err);
   }
 }
+
+export const fetchRequests = async(userId) => {
+  try {
+    return await axios.get(`/requests?id=${userId}`);
+  } catch (err) {
+    console.log(err);
+  }
+}

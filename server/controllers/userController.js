@@ -6,7 +6,7 @@ exports.searchUserByName = async (req, res) => {
     if (typeof value === "string") {
       const namePatterns = value.split(" ").map(n => `%${n}%`);
       const result = await db.any(
-        "SELECT concat_ws(' ', first_name, last_name) full_name \
+        "SELECT concat_ws(' ', first_name, last_name) full_name, email \
         FROM account \
         WHERE (concat(first_name, last_name)) LIKE ALL (ARRAY[$1:csv]);",
         [namePatterns]
