@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { fetchUsers } from "../../utils/apiCalls";
+import React, { useState, useEffect, useContext } from "react";
+import { fetchUsers, fetchRequests } from "../../utils/apiCalls";
+import { AuthContext } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
@@ -33,7 +34,9 @@ const Menu = (props) => {
 const SideMenu = (props) => {
   const type = props.contact ? "contact" : "request";
   const [input, setInput] = useState('');
-  const [users, setUsers] = useState([]);
+  const [results, setResults] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const { user } = useContext(AuthContext);
 
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -44,14 +47,25 @@ const SideMenu = (props) => {
       console.log(input);
       (async () => {
         const result = await fetchUsers(input);
-        setUsers(result.data.map((user) => ({
-          userfullname: user.full_name
+        setResults(result.data.map((result) => ({
+          userfullname: result.full_name,
+          useremail: result.email
         })));
       })();
     } else {
-      setUsers([]);
+      setResults([]);
     }
   }, [input]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await fetchRequests(user.user_id);
+      setRequests(result.data.map((request) => ({
+        userName: request.full_name,
+        userEmail: request.email
+      })));
+    })();
+  }, []);
 
   return (
     <div id="side-menu">
@@ -66,16 +80,17 @@ const SideMenu = (props) => {
         />
       </div>
       <div className="user-search-list">
-        {users.map((user) => (
+        {results.map((result) => (
           <User
-            userfullname={user.userfullname}
-            key={users.indexOf(user)}
+            userfullname={result.userfullname}
+            useremail={result.useremail}
+            key={results.indexOf(result)}
           />
         ))}
       </div>
       <div className="menu">
         <Menu lists active={type === "contact" ? "true" : "false"} />
-        <Menu requests amount="2" active={type === "request" ? "true" : "false"} />
+        <Menu requests amount={requests.length} active={type === "request" ? "true" : "false"} />
       </div>
     </div>
   )

@@ -81,9 +81,9 @@ export const fetchContacts = async (userId) => {
   }
 };
 
-export const fetchPendingRequests = async (userId) => {
+export const fetchRequests = async(userId) => {
   try {
-    return await axios.get(`/users/${userId}/requests`);
+    return await axios.get(`/requests?id=${userId}`);
   } catch (err) {
     console.log(err);
   }

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { fetchRequests } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
-import { fetchPendingRequests } from "../../utils/apiCalls";
 import "./friendrequest.css";
 
 const Request = (props) => {
@@ -21,23 +21,27 @@ const Request = (props) => {
 
 const FriendRequest = () => {
   const [requests, setRequests] = useState([]);
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
-      const result = await fetchPendingRequests(user.user_id);
-      setRequests(result.data.map((req) => ({
-        recipientName: req.full_name
+      const result = await fetchRequests(user.user_id);
+      setRequests(result.data.map((request) => ({
+        userName: request.full_name,
+        userEmail: request.email
       })));
     })();
   }, []);
-  return (
+
+  return(
     <div id="request-box">
       <div id="request-box-title">Friend Requests</div>
-      {/* <Request name="Nguyen Tien Dat" email="test@gmail.com" />
-      <Request name="Nguyen Tien Dat" email="test@gmail.com" /> */}
-      {requests.map((req) => (
-        <Request name={req.recipientName} key={requests.indexOf(req)} />
+      {requests.map((request) => (
+        <Request
+          name={request.userName}
+          email={request.userEmail}
+          key={requests.indexOf(request)}
+        />
       ))}
     </div>
   );
