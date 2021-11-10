@@ -63,3 +63,22 @@ exports.updatePassword = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.getPendingRequests = async (req, res) => {
+  const {userId} = req.params;
+  try {
+    const result = await db.any(
+      "SELECT\
+        pr.recipient_id,\
+        concat_ws(' ', a.first_name, a.last_name) full_name\
+      FROM pending_request pr\
+      JOIN account a ON pr.recipient_id = a.user_id\
+      WHERE pr.sender_id = $1",
+      [userId]
+    );
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

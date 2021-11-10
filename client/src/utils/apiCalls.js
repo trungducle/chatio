@@ -65,18 +65,26 @@ export const postNewMessage = async (conversationId, message) => {
   }
 };
 
-export const fetchUsers = async(userName) => {
+export const fetchUsers = async (userName) => {
   try {
     return await axios.get(`/users/search?value=${userName}`);
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-export const fetchContacts = async(userId) => {
+export const fetchContacts = async (userId) => {
   try {
     return await axios.get(`/contacts/${userId}`);
   } catch (err) {
     console.log(err);
   }
-}
+};
+
+export const fetchPendingRequests = async (userId) => {
+  try {
+    return await axios.get(`/users/${userId}/requests`);
+  } catch (err) {
+    console.log(err);
+  }
+};

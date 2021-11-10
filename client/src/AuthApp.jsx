@@ -49,11 +49,15 @@ const AuthApp = () => {
     value: [],
     isLoading: false
   });
-  // const [roomsState, roomsDispatch] = useReducer(roomsReducer, {
-  //   value: [],
-  //   isLoading: false,
-  //   error: false
-  // });
+
+  // const [userGlobalState, dispatch] = useReducer(reducer, {
+  //   roomList: {
+  //     value: [],
+  //     isLoading: false
+  //   },
+
+  // })
+
   const { user } = useContext(AuthContext);
 
   // fetch conversations on first load
