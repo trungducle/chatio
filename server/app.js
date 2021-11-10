@@ -39,7 +39,7 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   console.log(`a user connected: ${socket.id}`);
-  io.emit("notify", "hello, server here");
+  // io.emit("notify", "hello, server here");
 
   const users = [];
   for (const [id, socket] of io.of("/").sockets) {
@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
     });
   }
 
-  socket.emit("get users", users);
+  // socket.emit("get users", users);
 
   socket.on("join rooms", (rooms) => {
     console.log(rooms);

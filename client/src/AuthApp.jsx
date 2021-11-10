@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useReducer } from "react";
 import ChatMenu from "./components/chatMenu/ChatMenu";
 import Conversation from "./components/conversation/Conversation";
 import NavigationPanel from "./components/navigation/NavigationPanel";
@@ -7,6 +7,7 @@ import FriendRequest from "./components/requests/FriendRequest";
 import Contact from "./components/contacts/Contact";
 import { AuthContext } from "./contexts/AuthContext";
 // import { CurrentConversationContext } from "./contexts/CurrentConversationContext";
+// import roomsReducer from "./reducers/roomsReducer";
 import { fetchConversations } from "./utils/apiCalls";
 import {
   BrowserRouter as Router,
@@ -18,7 +19,7 @@ import socket from "./socket";
 const Home = (props) => (
   <>
     <NavigationPanel chat />
-    <ChatMenu roomList={props.roomList} setRoomList={props.setRoomList} />
+    <ChatMenu {...props} />
     <Conversation />
   </>
 );
@@ -43,13 +44,22 @@ const Contacts = () => {
   );
 };
 
-export const AuthApp = () => {
-  const [roomList, setRoomList] = useState([]);
+const AuthApp = () => {
+  const [roomList, setRoomList] = useState({
+    value: [],
+    isLoading: false
+  });
+  // const [roomsState, roomsDispatch] = useReducer(roomsReducer, {
+  //   value: [],
+  //   isLoading: false,
+  //   error: false
+  // });
   const { user } = useContext(AuthContext);
+
   // fetch conversations on first load
-  console.log(user);
   useEffect(() => {
     (async () => {
+      setRoomList({ value: [], isLoading: true })
       const result = await fetchConversations(user.user_id);
       const convList = result.data.map((res) => ({
         id: res.conversation_id,
@@ -60,24 +70,24 @@ export const AuthApp = () => {
           body: res.latest_message
         }
       }));
-      setRoomList(convList);
+      setRoomList({ value: convList, isLoading: false });
       socket.emit("join rooms", convList.map((conv) => conv.id));
     })();
   }, []);
 
-  useEffect(() => {
-    socket.on("notify", (message) => {
-      console.log(message);
-    });
+  // useEffect(() => {
+  //   socket.on("notify", (message) => {
+  //     console.log(message);
+  //   });
 
-    socket.on("get users", (users) => {
-      console.log(users);
-    });
+  //   socket.on("get users", (users) => {
+  //     console.log(users);
+  //   });
 
-    return () => {
-      socket.close();
-    }
-  }, []);
+  //   return () => {
+  //     socket.close();
+  //   }
+  // }, []);
 
   return (
     <Router>
@@ -95,3 +105,5 @@ export const AuthApp = () => {
     </Router>
   );
 };
+
+export default AuthApp;

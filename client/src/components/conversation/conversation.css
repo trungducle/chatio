@@ -150,3 +150,7 @@
   font-size: 2rem;
   color: #1988f0;
 }
+
+#messages-loading {
+  color: rgb(145, 145, 145);
+}

@@ -1,11 +1,11 @@
 import "./App.css";
 import React, { useContext } from "react";
 import { AuthContext } from "./contexts/AuthContext";
-import { AuthApp } from "./AuthApp";
-import { UnauthApp } from "./UnauthApp";
+import AuthApp from "./AuthApp";
+import UnauthApp from "./UnauthApp";
 import { CurrentConversationProvider } from "./contexts/CurrentConversationContext";
 
-export const App = () => {
+const App = () => {
   const { user } = useContext(AuthContext);
   return (
     <div className="App">
@@ -17,3 +17,5 @@ export const App = () => {
     </div>
   );
 };
+
+export default App;

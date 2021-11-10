@@ -22,7 +22,11 @@ const ChatMenu = (props) => {
   return (
     <div id="chat-menu">
       <TopBar />
-      <RoomList roomList={props.roomList} setRoomList={props.setRoomList} />
+      {props.roomList.isLoading ? (
+        <span id="rooms-loading">Loading conversations...</span>
+      ) : (
+        <RoomList {...props} />
+      )}
     </div>
   )
 };
