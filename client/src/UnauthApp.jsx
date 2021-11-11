@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { LogIn } from "./components/login/LogIn";
 import { SignUp } from "./components/signup/SignUp";
 
-export const UnauthApp = () => (
+const UnauthApp = () => (
   <Router>
     <Switch>
       <Route exact path="/">
@@ -15,3 +15,5 @@ export const UnauthApp = () => (
     </Switch>
   </Router>
 );
+
+export default UnauthApp;

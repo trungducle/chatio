@@ -1,36 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
-import { fetchConversations } from "../../utils/apiCalls";
 import Room from "./Room";
 import socket from "../../socket";
 import "./room.css";
 
 const RoomList = (props) => {
-  // const [roomList, setRoomList] = useState([]);
-  const [roomIdOnFocus, setRoomIdOnFocus] = useState(-1);
-  // const [updateState, setUpdateState] = useState(new Map());
   const { user } = useContext(AuthContext);
   const { conversation, setConversation } = useContext(CurrentConversationContext);
 
-  // // fetch conversations on first load
-  // useEffect(() => {
-  //   (async () => {
-  //     const result = await fetchConversations(user.user_id);
-  //     const convList = result.data.map((res) => ({
-  //       id: res.conversation_id,
-  //       name: res.name,
-  //       latestMessage: {
-  //         senderId: res.latest_sender_id,
-  //         senderName: res.latest_sender_name,
-  //         body: res.latest_message
-  //       }
-  //     }));
-  //     setRoomList(convList);
-  //     socket.emit("join rooms", convList.map((conv) => conv.id));
-  //   })();
-  // }, []);
-  
   // update name and latest message on receiving a new message
   useEffect(() => {
     socket.on("send message", (msg) => {
@@ -44,46 +22,49 @@ const RoomList = (props) => {
           }
         }));
       }
-      
-      props.setRoomList((prevList) => prevList.map((room) => {
-        if (room.id === msg.conversationId) {
-          const { latestMessage } = room;
-          latestMessage.senderId = msg.senderId;
-          latestMessage.senderName = msg.senderName;
-          latestMessage.body = msg.messageBody;
-        }
-        return room;
+
+      props.setRoomList((prevList) => ({
+        isLoading: false,
+        value: prevList.value.map((room) => {
+          if (room.id === msg.conversationId) {
+            const { latestMessage } = room;
+            latestMessage.senderId = msg.senderId;
+            latestMessage.senderName = msg.senderName;
+            latestMessage.body = msg.messageBody;
+          }
+          return room;
+        })
       }));
     });
   }, []);
-  
+
   // update name and latest message on sending a new message
   useEffect(() => {
-    props.setRoomList((prevList) => prevList.map((room) => {
-      if (room.id === conversation.id) {
-        const { latestMessage } = room;
-        latestMessage.senderId = conversation.latestMessage.senderId;
-        latestMessage.senderName = conversation.latestMessage.senderName;
-        latestMessage.body = conversation.latestMessage.body;
-      }
-      return room;
+    props.setRoomList((prevList) => ({
+      isLoading: false,
+      value: prevList.value.map((room) => {
+        if (room.id === conversation.id) {
+          const { latestMessage } = room;
+          latestMessage.senderId = conversation.latestMessage.senderId;
+          latestMessage.senderName = conversation.latestMessage.senderName;
+          latestMessage.body = conversation.latestMessage.body;
+        }
+        return room;
+      })
     }));
   }, [conversation.latestMessage]);
-  
+
   const onRoomSelected = (room) => {
-    if (!conversation.id || conversation.id !== room.id) {
-      setConversation({
-        id: room.id,
-        name: room.name,
-        latestMessage: room.latestMessage
-      });
-    }
-    setRoomIdOnFocus(room.id);
+    setConversation({
+      id: room.id,
+      name: room.name,
+      latestMessage: room.latestMessage
+    });
   };
 
   return (
     <div id="room-list">
-      {props.roomList.map((room) => (
+      {props.roomList.value.map((room) => (
         <Room
           name={room.name}
           latestMessage={room.latestMessage.body}
@@ -96,7 +77,7 @@ const RoomList = (props) => {
           key={room.id}
           id={room.id}
           handleClick={() => onRoomSelected(room)}
-          isFocused={roomIdOnFocus === room.id}
+          isFocused={conversation.id === room.id}
         />
       ))}
     </div>

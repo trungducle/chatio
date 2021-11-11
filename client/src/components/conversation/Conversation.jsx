@@ -20,11 +20,14 @@ const ConversationTopBar = (props) => (
     <button id="leave-btn">Leave</button>
     <button id="customize-btn">Customize</button>
   </div>
-  
+
 );
 
 const MessageBox = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({
+    value: [],
+    isLoading: false
+  });
   const messageEndRef = useRef(null);
   const { user } = useContext(AuthContext);
   const { conversation, setConversation } = useContext(CurrentConversationContext);
@@ -33,6 +36,10 @@ const MessageBox = () => {
   const handleChange = (event) => {
     setInput(event.target.value);
   };
+
+  const scrollToBottom = () => {
+    messageEndRef.current.scrollIntoView({ behavior: "auto" });
+  }
 
   const sendMessage = async (event) => {
     if ((event.type === "keydown" && event.key === "Enter")
@@ -54,57 +61,74 @@ const MessageBox = () => {
 
         setInput("");
 
-        setMessages((prevMessages) => [...prevMessages, {
-          ...newMessage,
-          senderName: `${user.first_name} ${user.last_name}`,
-          messageId: prevMessages.length + 1
-        }]);
+        setMessages((prevMessages) => ({
+          value: [...prevMessages.value, {
+            ...newMessage,
+            senderName: `${user.first_name} ${user.last_name}`,
+            messageId: prevMessages.value.length + 1
+          }],
+          isLoading: false
+        }));
 
         socket.emit("send message", {
           ...newMessage,
           senderName: `${user.first_name} ${user.last_name}`,
           conversationId: conversation.id
         });
-
+        
         await postNewMessage(conversation.id, newMessage);
+        // scrollToBottom();
       }
     }
   };
 
   useEffect(() => {
     (async () => {
+      setMessages({ value: [], isLoading: true });
       const result = await fetchMessages(conversation.id);
-      setMessages(result.data.map((msg) => ({
-        senderId: msg.sender_id,
-        senderName: msg.sender_name,
-        messageBody: msg.message_body
-      })));
+      setMessages({
+        value: result.data.map((msg) => ({
+          senderId: msg.sender_id,
+          senderName: msg.sender_name,
+          messageBody: msg.message_body
+        })),
+        isLoading: false
+      });
+
+      // scrollToBottom();
     })();
   }, [conversation.id]);
 
   useEffect(() => {
     socket.on("send message", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, {
-        senderId: msg.senderId,
-        senderName: msg.senderName,
-        messageBody: msg.messageBody
-      }]);
+      if (msg.conversationId === conversation.id) {
+        setMessages((prevMessages) => ({
+          isLoading: false,
+          value: [...prevMessages.value, {
+            senderId: msg.senderId,
+            senderName: msg.senderName,
+            messageBody: msg.messageBody
+          }]
+        }));
+
+        // scrollToBottom();
+      }
     });
   }, []);
 
-  useEffect(() => {
-    messageEndRef.current.scrollIntoView({ behavior: "auto" });
-  }, [messages]);
+  useEffect(scrollToBottom, [messages.value]);
 
   return (
     <>
       <div id="message-display">
-        {messages.map((msg) => (
+        {messages.isLoading ? (
+          <span id="messages-loading">Loading messages...</span>
+        ) : messages.value.map((msg) => (
           <Message
             senderName={`${msg.senderName}`}
             own={msg.senderId === user.user_id}
             body={msg.messageBody}
-            key={messages.indexOf(msg)}
+            key={messages.value.indexOf(msg)}
           />
         ))}
         <div

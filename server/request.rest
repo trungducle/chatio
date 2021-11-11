@@ -12,4 +12,4 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8000/update
+GET http://localhost:8000/users/7/requests

@@ -29,3 +29,9 @@
   color: #A3A6AB;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+#rooms-loading {
+  color: rgb(145, 145, 145);
+  flex: 17;
+  background-color: #282a36;
+}
