@@ -1,18 +1,39 @@
 import React, { useState, useEffect, useContext } from "react";
-import { fetchUsers, fetchRequests } from "../../utils/apiCalls";
+import { fetchUsers, fetchRequests, isFriend, sendRequest } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
 
 const User = (props) => {
+  const { user } = useContext(AuthContext);
+  const [friendstatus, setFriendStatus] = useState('');
   const fullname = props.userfullname;
   const email = props.useremail;
+  const searchid = props.userid;
+
+  useEffect(() => {
+    (async () => {
+      const result = await isFriend(user.user_id, searchid);
+      setFriendStatus(result.data[0].friend);
+    })();
+  }, [fullname]);
+
+  const sendFriendRequest = async (event) => {
+    await sendRequest(user.user_id, searchid);
+  }
+
 
   return (
     <div className="user-search">
-      <div className="user-fullname">{fullname}</div>
-      <div className="user-email">{email}</div>
+      <div className="info">
+        <div className="user-fullname">{fullname}</div>
+        <div className="user-email">{email}</div>
+      </div>
+      { friendstatus === 1 ?
+        <button className="chat-btn">Chat Now</button> :
+        <button className="add-btn" onClick={sendFriendRequest}>Add Friend</button>
+      }
     </div>
   );
 }
@@ -44,10 +65,10 @@ const SideMenu = (props) => {
 
   useEffect(() => {
     if (input) {
-      console.log(input);
       (async () => {
-        const result = await fetchUsers(input);
-        setResults(result.data.map((result) => ({
+        const res = await fetchUsers(input);
+        setResults(res.data.map((result) => ({
+          userid: result.user_id,
           userfullname: result.full_name,
           useremail: result.email
         })));
@@ -82,6 +103,7 @@ const SideMenu = (props) => {
       <div className="user-search-list">
         {results.map((result) => (
           <User
+            userid={result.userid}
             userfullname={result.userfullname}
             useremail={result.useremail}
             key={results.indexOf(result)}

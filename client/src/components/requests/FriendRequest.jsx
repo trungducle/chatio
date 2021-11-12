@@ -1,11 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import { fetchRequests } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
+import { rejectRequest, acceptRequest } from "../../utils/apiCalls";
 import "./friendrequest.css";
 
 const Request = (props) => {
   const name = props.name;
+  const userid = props.userid;
   // const email = props.email;
+  const { user } = useContext(AuthContext);
+
+  const accRequest = async (e) => {
+    await acceptRequest(userid, user.user_id);
+  }
+
+  const declineRequest = async(e) => {
+    await rejectRequest(userid, user.user_id);
+  }
 
   return (
     <div className="user-request">
@@ -13,8 +24,8 @@ const Request = (props) => {
         <div className="user-request-name">{name}</div>
         {/* <div className="user-request-mail">{email}</div> */}
       </div>
-      <button className="decline-btn">Decline</button>
-      <button className="accept-btn">Accept</button>
+      <button className="decline-btn" onClick={declineRequest}>Decline</button>
+      <button className="accept-btn" onClick={accRequest}>Accept</button>
     </div>
   );
 }
@@ -28,7 +39,8 @@ const FriendRequest = () => {
       const result = await fetchRequests(user.user_id);
       setRequests(result.data.map((request) => ({
         userName: request.full_name,
-        userEmail: request.email
+        userEmail: request.email,
+        userId: request.sender_id
       })));
     })();
   }, []);
@@ -40,6 +52,7 @@ const FriendRequest = () => {
         <Request
           name={request.userName}
           email={request.userEmail}
+          userid={request.userId}
           key={requests.indexOf(request)}
         />
       ))}

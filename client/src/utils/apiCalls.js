@@ -81,9 +81,50 @@ export const fetchContacts = async (userId) => {
   }
 };
 
-export const fetchRequests = async(userId) => {
+export const fetchRequests = async (userId) => {
   try {
     return await axios.get(`/requests?id=${userId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const sendRequest = async (senderId, recipientId) => {
+  try {
+    axios.post('/requests', {
+      sender: senderId, 
+      recipient: recipientId
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const rejectRequest = async (senderId, recipientId) => {
+  try {
+    axios.put('/requests/reject', {
+      sender: senderId,
+      recipient: recipientId
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const acceptRequest = async (senderId, recipientId) => {
+  try {
+    axios.put('/requests/accept', {
+      sender: senderId,
+      recipient: recipientId
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const isFriend = async (user1, user2) => {
+  try {
+    return await axios.get(`/users/friends/?user1=${user1}&user2=${user2}`)
   } catch (err) {
     console.log(err);
   }

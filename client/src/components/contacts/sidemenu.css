@@ -56,6 +56,30 @@
   margin: 5px auto;
   cursor: pointer;
   padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info {
+  text-align: left;
+  margin-right: auto;
+}
+
+.add-btn, .chat-btn {
+  background-color: #32a852;
+  border: 2px solid #32a852;
+  color: white;
+  width: 100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.add-btn:hover, .chat-btn:hover {
+  opacity: 0.8;
 }
 
 .user-search:hover {

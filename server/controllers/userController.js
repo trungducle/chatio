@@ -6,7 +6,7 @@ exports.searchUserByName = async (req, res) => {
     if (typeof value === "string") {
       const namePatterns = value.split(" ").map(n => `%${n}%`);
       const result = await db.any(
-        "SELECT concat_ws(' ', first_name, last_name) full_name, email \
+        "SELECT user_id, concat_ws(' ', first_name, last_name) full_name, email \
         FROM account \
         WHERE (concat(first_name, last_name)) LIKE ALL (ARRAY[$1:csv]);",
         [namePatterns]
@@ -75,6 +75,20 @@ exports.getPendingRequests = async (req, res) => {
       JOIN account a ON pr.recipient_id = a.user_id\
       WHERE pr.sender_id = $1",
       [userId]
+    );
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+exports.isFriend = async (req, res) => {
+  const { user1, user2 } = req.query;
+  try {
+    const result = await db.any(
+      "SELECT check_friend($1, $2) as friend",
+      [user1, user2]
     );
 
     res.status(200).json(result);
