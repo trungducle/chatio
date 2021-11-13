@@ -81,9 +81,17 @@ export const fetchContacts = async (userId) => {
   }
 };
 
-export const fetchRequests = async(userId) => {
+export const fetchRequests = async (userId) => {
   try {
     return await axios.get(`/requests?id=${userId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const declineRequest = async (userId) => {
+  try {
+    return axios.delete(`/`)
   } catch (err) {
     console.log(err);
   }

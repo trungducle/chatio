@@ -2,10 +2,18 @@ import React, { useState, useContext, useEffect } from "react";
 import { fetchRequests } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
 import "./friendrequest.css";
+import socket from "../../socket";
 
 const Request = (props) => {
   const name = props.name;
-  // const email = props.email;
+
+  const handleDecline = async () => {
+    
+  };
+
+  const handleAccept = async () => {
+
+  };
 
   return (
     <div className="user-request">
@@ -13,8 +21,18 @@ const Request = (props) => {
         <div className="user-request-name">{name}</div>
         {/* <div className="user-request-mail">{email}</div> */}
       </div>
-      <button className="decline-btn">Decline</button>
-      <button className="accept-btn">Accept</button>
+      <button
+        className="decline-btn"
+        onClick={handleDecline}
+      >
+        Decline
+      </button>
+      <button
+        className="accept-btn"
+        onClick={handleAccept}
+      >
+        Accept
+      </button>
     </div>
   );
 }
