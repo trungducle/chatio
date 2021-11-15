@@ -37,9 +37,9 @@ export const signupCall = async (userInfo) => {
 export const logoutCall = async (dispatch) => {
   dispatch(logoutStart());
   try {
-    await axios.post("/auth/logout", getAuthHeader());
-    dispatch(notLoggedIn());
+    await axios.post("/auth/logout", {}, getAuthHeader());
     localStorage.removeItem("a_token");
+    dispatch(notLoggedIn());
     socket.disconnect();
   } catch (err) {
     dispatch(logoutFailure(err));
