@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { loginCall } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
 import "./login.css";
@@ -8,10 +9,12 @@ export const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, dispatch } = useContext(AuthContext);
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     loginCall({ email, password }, dispatch);
+    history.push("/");
   }
 
   return (

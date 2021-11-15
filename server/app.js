@@ -3,14 +3,13 @@ const dotenv = require("dotenv");
 const http = require("http");
 const { Server } = require("socket.io");
 
+const auth = require("./routes/auth");
 const users = require("./routes/users");
 const contacts = require("./routes/contacts");
 const conversations = require("./routes/conversations");
-const messages = require("./routes/messages");
+const userInfo = require("./routes/info");
 const requests = require("./routes/requests");
-const login = require("./routes/login");
-const signup = require("./routes/signup");
-const logout = require("./routes/logout");
+const { verifyAccessToken } = require("./config/auth");
 
 const app = express();
 const server = http.createServer(app);
@@ -21,37 +20,29 @@ const API_PORT = process.env.API_PORT || 8000;
 
 dotenv.config();
 
+app.use("/auth", auth);
 app.use("/users", users);
 app.use("/contacts", contacts);
 app.use("/conversations", conversations);
-app.use("/messages", messages);
 app.use("/requests", requests);
-app.use("/login", login);
-app.use("/signup", signup);
-app.use("/logout", logout);
+app.use("/info", userInfo);
 
 io.use((socket, next) => {
-  const { userInfo } = socket.handshake.auth;
-  if (!userInfo.userId) {
-    return next(new Error("Invalid userId"));
+  const { accessToken } = socket.handshake.auth;
+  if (!accessToken) {
+    next(new Error("Invalid user"));
   }
-  socket.userInfo = userInfo;
+
+  const userInfo = verifyAccessToken(accessToken);
+  socket.userInfo = userInfo && {
+    userId: userInfo.id,
+    name: `${userInfo.firstName} ${userInfo.lastName}`
+  };
   next();
 });
 
 io.on("connection", (socket) => {
   console.log(`a user connected: ${socket.id}`);
-  // io.emit("notify", "hello, server here");
-
-  const users = [];
-  for (const [id, socket] of io.of("/").sockets) {
-    users.push({
-      socketId: id,
-      userInfo: socket.userInfo,
-    });
-  }
-
-  // socket.emit("get users", users);
 
   socket.on("join rooms", (rooms) => {
     console.log(rooms);
@@ -64,8 +55,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send message", (msg) => {
-    console.log(`Received message from user ${msg.senderId} to room ${msg.conversationId}`);
-    socket.to(msg.conversationId).emit("send message", msg);
+    console.log(`Received message from user ${socket.userInfo.userId} to room ${msg.conversationId}`);
+    socket.to(msg.conversationId).emit("send message", {
+      conversationId: msg.conversationId,
+      sender: socket.userInfo.name,
+      body: msg.body,
+      isOwn: false
+    });
   });
 });
 

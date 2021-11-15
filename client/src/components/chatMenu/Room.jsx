@@ -1,6 +1,4 @@
 import React from "react";
-// import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
-// import socket from "../../socket";
 import "./room.css";
 
 const display = (text, maxLength) => {
@@ -29,7 +27,7 @@ const LatestMessage = (props) => {
       className="latest-message"
     >
       {display(
-        `${props.latestSenderName}: ${props.latestMessage}`,
+        `${props.latestSender}: ${props.latestMessage}`,
         MAX_DISPLAY_LENGTH
       )}
     </div>
@@ -37,16 +35,6 @@ const LatestMessage = (props) => {
 };
 
 const Room = (props) => {
-  // const [onNewMessage, setOnNewMessage] = useState(false);
-  // const {conversation} = useContext(CurrentConversationContext);
-
-  // useEffect(() => {
-  //   socket.on("send message", (msg) => {
-  //     if (msg.conversationId !== conversation.id) {
-  //       setOnNewMessage(true);
-  //     }
-  //   });
-  // }, []);
   return (
     <div
       className={props.isFocused ? "room focus" : "room"}
@@ -55,8 +43,7 @@ const Room = (props) => {
       <RoomName name={props.name} />
       <LatestMessage
         latestMessage={props.latestMessage}
-        latestSenderName={props.latestSenderName}
-        // onNewMessage={onNewMessage}
+        latestSender={props.latestSender}
       />
     </div>
   )

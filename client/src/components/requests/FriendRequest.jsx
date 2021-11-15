@@ -1,19 +1,23 @@
 import React, { useState, useContext, useEffect } from "react";
 import { fetchRequests } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
+import { rejectRequest, acceptRequest } from "../../utils/apiCalls";
 import "./friendrequest.css";
-import socket from "../../socket";
+// import socket from "../../socket";
 
 const Request = (props) => {
   const name = props.name;
+  const userid = props.userid;
+  // const email = props.email;
+  // const { user } = useContext(AuthContext);
 
-  const handleDecline = async () => {
-    
-  };
+  const accRequest = async (e) => {
+    await acceptRequest(userid);
+  }
 
-  const handleAccept = async () => {
-
-  };
+  const declineRequest = async (e) => {
+    await rejectRequest(userid);
+  }
 
   return (
     <div className="user-request">
@@ -21,18 +25,8 @@ const Request = (props) => {
         <div className="user-request-name">{name}</div>
         {/* <div className="user-request-mail">{email}</div> */}
       </div>
-      <button
-        className="decline-btn"
-        onClick={handleDecline}
-      >
-        Decline
-      </button>
-      <button
-        className="accept-btn"
-        onClick={handleAccept}
-      >
-        Accept
-      </button>
+      <button className="decline-btn" onClick={declineRequest}>Decline</button>
+      <button className="accept-btn" onClick={accRequest}>Accept</button>
     </div>
   );
 }
@@ -43,21 +37,23 @@ const FriendRequest = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await fetchRequests(user.user_id);
+      const result = await fetchRequests();
       setRequests(result.data.map((request) => ({
         userName: request.full_name,
-        userEmail: request.email
+        userEmail: request.email,
+        userId: request.sender_id
       })));
     })();
   }, []);
 
-  return(
+  return (
     <div id="request-box">
       <div id="request-box-title">Friend Requests</div>
       {requests.map((request) => (
         <Request
           name={request.userName}
           email={request.userEmail}
+          userid={request.userId}
           key={requests.indexOf(request)}
         />
       ))}

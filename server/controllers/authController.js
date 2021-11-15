@@ -1,5 +1,6 @@
 const { db, pgp } = require("../config/database");
 const bcrypt = require("bcrypt");
+const { getAccessToken } = require("../config/auth");
 
 exports.handleLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -14,14 +15,23 @@ exports.handleLogin = async (req, res) => {
     }
 
     const isMatchPassword = await bcrypt.compare(password, result.password);
-    if (isMatchPassword) {
-      await db.none(
-        "UPDATE account SET is_active = TRUE\
-        WHERE user_id = $1",
-        [result.user_id]
-      );
+    if (!isMatchPassword) {
+      res.status(400).json({ error: "wrong email or password" });
     }
-    res.status(200).json(result);
+
+    await db.none(
+      "UPDATE account SET is_active = TRUE\
+      WHERE user_id = $1",
+      [result.user_id]
+    );
+
+    const accessToken = getAccessToken({
+      id: result.user_id,
+      email: result.email,
+      firstName: result.first_name,
+      lastName: result.last_name
+    });
+    res.status(200).json({ accessToken });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -46,30 +56,30 @@ exports.handleSignup = async (req, res) => {
     );
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await db.none(pgp.helpers.insert({
-      email,
-      password: hashedPassword,
-      first_name: firstName,
-      last_name: lastName,
-    }, accountColSet)
-    );
+    await db.none(pgp.helpers.insert(
+      {
+        email,
+        password: hashedPassword,
+        first_name: firstName,
+        last_name: lastName,
+      },
+      accountColSet
+    ));
 
-    res.status(200).send("Inserted new user");
+    res.status(200).json({ message: "New user created" });
   } catch (err) {
     res.status(500).json(err);
   }
 };
 
 exports.handleLogout = async (req, res) => {
-  const { userId } = req.body;
-  console.log(userId);
   try {
     await db.none(
       "UPDATE account SET is_active = FALSE\
       WHERE user_id = $1",
-      [userId]
+      [req.user.id]
     );
-    res.status(200).send("Logged out");
+    res.status(200).json({ message: "Logged out" });
   } catch (err) {
     res.status(500).json(err);
   }

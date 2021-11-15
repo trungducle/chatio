@@ -7,7 +7,7 @@ const MainSearchBar = () => {
   const [searchPattern, setSearchPattern] = useState("");
 
   useEffect(() => {
-    
+
   }, [searchPattern]);
 
   return (

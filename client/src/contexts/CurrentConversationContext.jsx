@@ -7,9 +7,8 @@ export const CurrentConversationProvider = ({ children }) => {
     id: null,
     name: "",
     latestMessage: {
-      body: "",
-      senderId: null,
-      senderName: ""
+      sender: "",
+      body: ""
     }
   });
 

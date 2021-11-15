@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
 import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
 import socket from "../../socket";
 import { fetchMessages, postNewMessage } from "../../utils/apiCalls";
@@ -8,7 +7,7 @@ import "./conversation.css";
 const Message = (props) => {
   return (
     <div className={props.own ? "message-item own" : "message-item"}>
-      <div className="sender-name">{props.own ? "" : props.senderName}</div>
+      <div className="sender-name">{props.own ? "" : props.sender}</div>
       <p className="message-text">{props.body}</p>
     </div>
   );
@@ -29,7 +28,6 @@ const MessageBox = () => {
     isLoading: false
   });
   const messageEndRef = useRef(null);
-  const { user } = useContext(AuthContext);
   const { conversation, setConversation } = useContext(CurrentConversationContext);
   const [input, setInput] = useState("");
 
@@ -46,15 +44,13 @@ const MessageBox = () => {
       || event.type === "click") {
       if (input) {
         const newMessage = {
-          senderId: user.user_id,
-          messageBody: input
+          body: input
         };
 
         setConversation((prevConv) => ({
           ...prevConv,
           latestMessage: {
-            senderId: user.user_id,
-            senderName: `${user.first_name} ${user.last_name}`,
+            sender: "You",
             body: input
           }
         }));
@@ -62,22 +58,22 @@ const MessageBox = () => {
         setInput("");
 
         setMessages((prevMessages) => ({
-          value: [...prevMessages.value, {
-            ...newMessage,
-            senderName: `${user.first_name} ${user.last_name}`,
-            messageId: prevMessages.value.length + 1
-          }],
+          value: [
+            ...prevMessages.value, {
+              body: newMessage.body,
+              sender: "You",
+              isOwn: true
+            }
+          ],
           isLoading: false
         }));
 
         socket.emit("send message", {
-          ...newMessage,
-          senderName: `${user.first_name} ${user.last_name}`,
+          body: newMessage.body,
           conversationId: conversation.id
         });
-        
+
         await postNewMessage(conversation.id, newMessage);
-        // scrollToBottom();
       }
     }
   };
@@ -87,31 +83,20 @@ const MessageBox = () => {
       setMessages({ value: [], isLoading: true });
       const result = await fetchMessages(conversation.id);
       setMessages({
-        value: result.data.map((msg) => ({
-          senderId: msg.sender_id,
-          senderName: msg.sender_name,
-          messageBody: msg.message_body
-        })),
+        value: result.data,
         isLoading: false
       });
-
-      // scrollToBottom();
     })();
   }, [conversation.id]);
 
   useEffect(() => {
     socket.on("send message", (msg) => {
       if (msg.conversationId === conversation.id) {
+        const { sender, body, isOwn } = msg;
         setMessages((prevMessages) => ({
           isLoading: false,
-          value: [...prevMessages.value, {
-            senderId: msg.senderId,
-            senderName: msg.senderName,
-            messageBody: msg.messageBody
-          }]
+          value: [...prevMessages.value, { sender, body, isOwn }]
         }));
-
-        // scrollToBottom();
       }
     });
   }, []);
@@ -125,9 +110,9 @@ const MessageBox = () => {
           <span id="messages-loading">Loading messages...</span>
         ) : messages.value.map((msg) => (
           <Message
-            senderName={`${msg.senderName}`}
-            own={msg.senderId === user.user_id}
-            body={msg.messageBody}
+            sender={msg.sender}
+            body={msg.body}
+            own={msg.isOwn}
             key={messages.value.indexOf(msg)}
           />
         ))}

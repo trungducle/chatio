@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchContacts } from "../../utils/apiCalls";
-import { AuthContext } from "../../contexts/AuthContext";
 import "./contact.css";
 
 const Friend = (props) => {
@@ -21,13 +20,13 @@ const Friend = (props) => {
 
 const Contact = () => {
   const [contacts, setContacts] = useState([]);
-  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
-      const result = await fetchContacts(user.user_id);
+      const result = await fetchContacts();
+      console.log(result);
       setContacts(result.data.map((contact) => ({
-        name: contact.full_name
+        name: contact.friendName
       })));
     })();
   }, []);

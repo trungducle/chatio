@@ -5,7 +5,7 @@ import NavigationPanel from "./components/navigation/NavigationPanel";
 import SideMenu from "./components/contacts/SideMenu";
 import FriendRequest from "./components/requests/FriendRequest";
 import Contact from "./components/contacts/Contact";
-import { AuthContext } from "./contexts/AuthContext";
+// import { AuthContext } from "./contexts/AuthContext";
 // import { CurrentConversationContext } from "./contexts/CurrentConversationContext";
 // import roomsReducer from "./reducers/roomsReducer";
 import { fetchConversations } from "./utils/apiCalls";
@@ -50,6 +50,8 @@ const AuthApp = () => {
     isLoading: false
   });
 
+  // console.log(socket);
+
   // const [userGlobalState, dispatch] = useReducer(reducer, {
   //   roomList: {
   //     value: [],
@@ -58,40 +60,34 @@ const AuthApp = () => {
 
   // })
 
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
+  // console.log(user);
 
   // fetch conversations on first load
   useEffect(() => {
     (async () => {
       setRoomList({ value: [], isLoading: true })
-      const result = await fetchConversations(user.user_id);
-      const convList = result.data.map((res) => ({
-        id: res.conversation_id,
-        name: res.name,
-        latestMessage: {
-          senderId: res.latest_sender_id,
-          senderName: res.latest_sender_name,
-          body: res.latest_message
-        }
-      }));
-      setRoomList({ value: convList, isLoading: false });
-      socket.emit("join rooms", convList.map((conv) => conv.id));
+      try {
+      const result = await fetchConversations();
+      // const convList = result.data.map((conv) => ({
+      //   id: conv.id,
+      //   name: conv.name,
+      //   latestMessage: {
+      //     sender: conv.sender,
+      //     body: conv.body
+      //     // senderId: conv.senderId,
+      //     // senderName: conv.senderName,
+      //     // byCurrentUser: conv.byCurrentUser
+      //   }
+      // }));
+      console.log(JSON.stringify(result.data));
+      setRoomList({ value: result.data, isLoading: false });
+      socket.emit("join rooms", result.data.map((conv) => conv.id));
+      } catch (err) {
+        console.log(err);
+      }
     })();
   }, []);
-
-  // useEffect(() => {
-  //   socket.on("notify", (message) => {
-  //     console.log(message);
-  //   });
-
-  //   socket.on("get users", (users) => {
-  //     console.log(users);
-  //   });
-
-  //   return () => {
-  //     socket.close();
-  //   }
-  // }, []);
 
   return (
     <Router>

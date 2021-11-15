@@ -5,18 +5,22 @@ import {
 } from "../actions/authActions";
 import socket from "../socket";
 
+const getAuthHeader = () => {
+  const accessToken = localStorage.getItem("a_token");
+  if (!accessToken) return null;
+  return {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  };
+}
+
 export const loginCall = async (userCredentials, dispatch) => {
   dispatch(loginStart());
   try {
-    const result = await axios.post("/login", userCredentials);
+    const result = await axios.post("/auth/login", userCredentials);
+    localStorage.setItem("a_token", result.data.accessToken);
     dispatch(loggedIn(result.data));
-    socket.auth = {
-      userInfo: {
-        userId: result.data.user_id,
-        name: `${result.data.first_name} ${result.data.last_name}`
-      }
-    };
-    socket.connect();
   } catch (err) {
     dispatch(loginFailure(err));
   }
@@ -24,26 +28,27 @@ export const loginCall = async (userCredentials, dispatch) => {
 
 export const signupCall = async (userInfo) => {
   try {
-    await axios.post("/signup", userInfo);
+    await axios.post("/auth/signup", userInfo);
   } catch (err) {
     console.log(err);
   }
 };
 
-export const logoutCall = async ({ userId }, dispatch) => {
+export const logoutCall = async (dispatch) => {
   dispatch(logoutStart());
   try {
-    await axios.post("/logout", { userId });
+    await axios.post("/auth/logout", getAuthHeader());
     dispatch(notLoggedIn());
+    localStorage.removeItem("a_token");
     socket.disconnect();
   } catch (err) {
     dispatch(logoutFailure(err));
   }
 };
 
-export const fetchConversations = async (userId) => {
+export const fetchConversations = async () => {
   try {
-    return await axios.get(`/conversations/${userId}`);
+    return await axios.get("/conversations", getAuthHeader());
   } catch (err) {
     console.log(err);
   }
@@ -51,7 +56,7 @@ export const fetchConversations = async (userId) => {
 
 export const fetchMessages = async (conversationId) => {
   try {
-    return await axios.get(`/messages/${conversationId}`);
+    return await axios.get(`/conversations/${conversationId}`, getAuthHeader());
   } catch (err) {
     console.log(err);
   }
@@ -59,7 +64,7 @@ export const fetchMessages = async (conversationId) => {
 
 export const postNewMessage = async (conversationId, message) => {
   try {
-    axios.post(`/messages/${conversationId}`, message);
+    axios.post(`/conversations/${conversationId}`, message, getAuthHeader());
   } catch (err) {
     console.log(err);
   }
@@ -73,25 +78,55 @@ export const fetchUsers = async (userName) => {
   }
 };
 
-export const fetchContacts = async (userId) => {
+export const fetchContacts = async () => {
   try {
-    return await axios.get(`/contacts/${userId}`);
+    return await axios.get("/contacts", getAuthHeader());
   } catch (err) {
     console.log(err);
   }
 };
 
-export const fetchRequests = async (userId) => {
+export const fetchRequests = async () => {
   try {
-    return await axios.get(`/requests?id=${userId}`);
+    return await axios.get("/requests", getAuthHeader());
   } catch (err) {
     console.log(err);
   }
 };
 
-export const declineRequest = async (userId) => {
+export const sendRequest = async (recipientId) => {
   try {
-    return axios.delete(`/`)
+    axios.post('/requests', {
+      recipient: recipientId
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const rejectRequest = async (senderId) => {
+  try {
+    axios.put('/requests/reject', {
+      sender: senderId,
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const acceptRequest = async (senderId) => {
+  try {
+    axios.put('/requests/accept', {
+      sender: senderId,
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const areFriends = async (contactId) => {
+  try {
+    return await axios.get(`/users/friends?contact=${contactId}`, getAuthHeader());
   } catch (err) {
     console.log(err);
   }

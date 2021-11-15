@@ -6,11 +6,11 @@ import { logoutCall } from "../../utils/apiCalls";
 import "./navigationPanel.css";
 
 const LogoutButton = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
   const history = useHistory();
 
   const handleClick = () => {
-    logoutCall({ userId: user.user_id }, dispatch);
+    logoutCall(dispatch);
     history.push("/");
   };
 

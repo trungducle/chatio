@@ -1,18 +1,37 @@
-import React, { useState, useEffect, useContext } from "react";
-import { fetchUsers, fetchRequests } from "../../utils/apiCalls";
-import { AuthContext } from "../../contexts/AuthContext";
+import React, { useState, useEffect } from "react";
+import { fetchUsers, fetchRequests, sendRequest, areFriends } from "../../utils/apiCalls";
 import { Link } from "react-router-dom";
 import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
 
 const User = (props) => {
+  // const { user } = useContext(AuthContext);
+  const [friendStatus, setFriendStatus] = useState("");
   const fullname = props.userfullname;
   const email = props.useremail;
+  const contactId = props.userid;
+
+  useEffect(() => {
+    (async () => {
+      const result = await areFriends(contactId);
+      setFriendStatus(result.data[0].areFriends);
+    })();
+  }, [fullname]);
+
+  const sendFriendRequest = async () => {
+    await sendRequest(contactId);
+  }
 
   return (
     <div className="user-search">
-      <div className="user-fullname">{fullname}</div>
-      <div className="user-email">{email}</div>
+      <div className="info">
+        <div className="user-fullname">{fullname}</div>
+        <div className="user-email">{email}</div>
+      </div>
+      {friendStatus === 1
+        ? <button className="chat-btn">Chat Now</button>
+        : <button className="add-btn" onClick={sendFriendRequest}>Add Friend</button>
+      }
     </div>
   );
 }
@@ -36,7 +55,6 @@ const SideMenu = (props) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
   const [requests, setRequests] = useState([]);
-  const { user } = useContext(AuthContext);
 
   const handleChange = (event) => {
     setInput(event.target.value);
@@ -44,10 +62,10 @@ const SideMenu = (props) => {
 
   useEffect(() => {
     if (input) {
-      console.log(input);
       (async () => {
-        const result = await fetchUsers(input);
-        setResults(result.data.map((result) => ({
+        const res = await fetchUsers(input);
+        setResults(res.data.map((result) => ({
+          userid: result.user_id,
           userfullname: result.full_name,
           useremail: result.email
         })));
@@ -59,7 +77,7 @@ const SideMenu = (props) => {
 
   useEffect(() => {
     (async () => {
-      const result = await fetchRequests(user.user_id);
+      const result = await fetchRequests();
       setRequests(result.data.map((request) => ({
         userName: request.full_name,
         userEmail: request.email
@@ -82,6 +100,7 @@ const SideMenu = (props) => {
       <div className="user-search-list">
         {results.map((result) => (
           <User
+            userid={result.userid}
             userfullname={result.userfullname}
             useremail={result.useremail}
             key={results.indexOf(result)}

@@ -1,8 +1,13 @@
 const express = require("express");
 const contactRouter = express.Router();
-const { db } = require("../../config/database");
+const { db } = require("../config/database");
+const { getFriends } = require("../controllers/contactController");
+const { authenticateToken } = require("../middlewares/auth");
 
 contactRouter.use(express.json());
+contactRouter.use(authenticateToken);
+
+contactRouter.get("/", getFriends);
 
 contactRouter.route("/:userId")
   .get(async (req, res) => {

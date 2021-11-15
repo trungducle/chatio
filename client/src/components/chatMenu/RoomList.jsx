@@ -1,24 +1,22 @@
 import React, { useEffect, useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
 import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
 import Room from "./Room";
 import socket from "../../socket";
 import "./room.css";
 
 const RoomList = (props) => {
-  const { user } = useContext(AuthContext);
   const { conversation, setConversation } = useContext(CurrentConversationContext);
 
   // update name and latest message on receiving a new message
   useEffect(() => {
     socket.on("send message", (msg) => {
-      if (msg.conversationId === conversation.id) {
+      const { conversationId, sender, body } = msg;
+      if (conversationId === conversation.id) {
         setConversation((prevConv) => ({
           ...prevConv,
           latestMessage: {
-            body: msg.messageBody,
-            senderId: msg.senderId,
-            senderName: msg.senderName
+            sender,
+            body
           }
         }));
       }
@@ -26,11 +24,10 @@ const RoomList = (props) => {
       props.setRoomList((prevList) => ({
         isLoading: false,
         value: prevList.value.map((room) => {
-          if (room.id === msg.conversationId) {
+          if (room.id === conversationId) {
             const { latestMessage } = room;
-            latestMessage.senderId = msg.senderId;
-            latestMessage.senderName = msg.senderName;
-            latestMessage.body = msg.messageBody;
+            latestMessage.sender = sender;
+            latestMessage.body = body;
           }
           return room;
         })
@@ -45,8 +42,7 @@ const RoomList = (props) => {
       value: prevList.value.map((room) => {
         if (room.id === conversation.id) {
           const { latestMessage } = room;
-          latestMessage.senderId = conversation.latestMessage.senderId;
-          latestMessage.senderName = conversation.latestMessage.senderName;
+          latestMessage.sender = conversation.latestMessage.sender;
           latestMessage.body = conversation.latestMessage.body;
         }
         return room;
@@ -68,12 +64,7 @@ const RoomList = (props) => {
         <Room
           name={room.name}
           latestMessage={room.latestMessage.body}
-          latestSenderName={
-            room.latestMessage.senderId === user.user_id
-              ? "You"
-              : room.latestMessage.senderName
-          }
-          latestSenderId={room.latestMessage.senderId}
+          latestSender={room.latestMessage.sender}
           key={room.id}
           id={room.id}
           handleClick={() => onRoomSelected(room)}
