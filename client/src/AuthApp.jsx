@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useContext, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import ChatMenu from "./components/chatMenu/ChatMenu";
 import Conversation from "./components/conversation/Conversation";
 import NavigationPanel from "./components/navigation/NavigationPanel";
 import SideMenu from "./components/contacts/SideMenu";
 import FriendRequest from "./components/requests/FriendRequest";
 import Contact from "./components/contacts/Contact";
-// import { AuthContext } from "./contexts/AuthContext";
-// import { CurrentConversationContext } from "./contexts/CurrentConversationContext";
-// import roomsReducer from "./reducers/roomsReducer";
 import { fetchConversations } from "./utils/apiCalls";
 import {
   BrowserRouter as Router,
@@ -50,39 +47,14 @@ const AuthApp = () => {
     isLoading: false
   });
 
-  // console.log(socket);
-
-  // const [userGlobalState, dispatch] = useReducer(reducer, {
-  //   roomList: {
-  //     value: [],
-  //     isLoading: false
-  //   },
-
-  // })
-
-  // const { user } = useContext(AuthContext);
-  // console.log(user);
-
   // fetch conversations on first load
   useEffect(() => {
     (async () => {
       setRoomList({ value: [], isLoading: true })
       try {
-      const result = await fetchConversations();
-      // const convList = result.data.map((conv) => ({
-      //   id: conv.id,
-      //   name: conv.name,
-      //   latestMessage: {
-      //     sender: conv.sender,
-      //     body: conv.body
-      //     // senderId: conv.senderId,
-      //     // senderName: conv.senderName,
-      //     // byCurrentUser: conv.byCurrentUser
-      //   }
-      // }));
-      console.log(JSON.stringify(result.data));
-      setRoomList({ value: result.data, isLoading: false });
-      socket.emit("join rooms", result.data.map((conv) => conv.id));
+        const result = await fetchConversations();
+        setRoomList({ value: result.data, isLoading: false });
+        socket.emit("join rooms", result.data.map((conv) => conv.id));
       } catch (err) {
         console.log(err);
       }

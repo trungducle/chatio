@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { fetchUsers, fetchRequests, sendRequest, areFriends } from "../../utils/apiCalls";
+import { fetchUsers, fetchRequests, sendRequest, isFriend } from "../../utils/apiCalls";
 import { Link } from "react-router-dom";
 import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
 
 const User = (props) => {
-  // const { user } = useContext(AuthContext);
   const [friendStatus, setFriendStatus] = useState("");
   const fullname = props.userfullname;
   const email = props.useremail;
@@ -13,8 +12,8 @@ const User = (props) => {
 
   useEffect(() => {
     (async () => {
-      const result = await areFriends(contactId);
-      setFriendStatus(result.data[0].areFriends);
+      const result = await isFriend(contactId);
+      setFriendStatus(result.data.isFriend);
     })();
   }, [fullname]);
 

@@ -124,7 +124,7 @@ export const acceptRequest = async (senderId) => {
   }
 };
 
-export const areFriends = async (contactId) => {
+export const isFriend = async (contactId) => {
   try {
     return await axios.get(`/users/friends?contact=${contactId}`, getAuthHeader());
   } catch (err) {

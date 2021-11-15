@@ -16,7 +16,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8000/contacts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJ0ZXN0ZW1haWxAdGVzdC5jb20iLCJmaXJzdE5hbWUiOiJ0cnVuZyBkdWMiLCJsYXN0TmFtZSI6ImxlIiwiaWF0IjoxNjM2OTY3NDQ4LCJleHAiOjE2MzY5NzEwNDh9.rECtUdsax9jQJuYeM6knELd6DzZuHc9VExWJKaf_Tes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJva2F5QHRlc3QuY29tIiwiZmlyc3ROYW1lIjoidGVzdCIsImxhc3ROYW1lIjoiaG9seSIsImlhdCI6MTYzNjk3NDc0MH0.DGF5mzhcnmbrcjqqcv_nCv9Q4W_FogAVNWk8LVhy8m0
 
 ###
 
@@ -31,3 +31,11 @@ Content-Type: application/json
 {
     "email": "testemail@test.com"
 }
+
+###
+GET http://localhost:8000/users/friends?contact=7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJva2F5QHRlc3QuY29tIiwiZmlyc3ROYW1lIjoidGVzdCIsImxhc3ROYW1lIjoiaG9seSIsImlhdCI6MTYzNjk3NDc0MH0.DGF5mzhcnmbrcjqqcv_nCv9Q4W_FogAVNWk8LVhy8m0
+
+###
+GET http://localhost:8000/users/search?value=da
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJva2F5QHRlc3QuY29tIiwiZmlyc3ROYW1lIjoidGVzdCIsImxhc3ROYW1lIjoiaG9seSIsImlhdCI6MTYzNjk3NDc0MH0.DGF5mzhcnmbrcjqqcv_nCv9Q4W_FogAVNWk8LVhy8m0

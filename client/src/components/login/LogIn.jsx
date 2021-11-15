@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { loginCall } from "../../utils/apiCalls";
 import { AuthContext } from "../../contexts/AuthContext";
+import socket from "../../socket";
 import "./login.css";
 
 export const LogIn = () => {
@@ -15,6 +16,10 @@ export const LogIn = () => {
     e.preventDefault();
     loginCall({ email, password }, dispatch);
     history.push("/");
+    socket.auth = {
+      accessToken: localStorage.getItem("a_token")
+    };
+    socket.connect();
   }
 
   return (

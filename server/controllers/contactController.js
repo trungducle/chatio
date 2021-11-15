@@ -32,15 +32,15 @@ exports.getPendingRequests = async (req, res) => {
   }
 };
 
-exports.areFriends = async (req, res) => {
-  const { contactId } = req.query;
+exports.checkIsFriend = async (req, res) => {
+  const { contact } = req.query;
   try {
-    const result = await db.any(
-      "SELECT check_friend($1, $2) as are_friends",
-      [req.user.id, contactId]
+    const result = await db.one(
+      "SELECT check_friend($1, $2) as is_friend",
+      [req.user.id, contact]
     );
 
-    res.status(200).json({ areFriends: result.are_friends });
+    res.status(200).json({ isFriend: result.is_friend });
   } catch (err) {
     res.status(500).json(err);
   }
