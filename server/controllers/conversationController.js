@@ -1,13 +1,15 @@
 const { db, pgp } = require("../config/database");
 
 exports.createConversation = async (req, res) => {
-  const { name, creatorId, participantId } = req.body;
+  const { name, participantId } = req.body;
+  const userid = req.user.id;
+
   try {
     console.log("Querying...");
     const insertConversation = await db.query(
       "INSERT INTO conversation (name, creator_id)\
       VALUES ($1, $2) RETURNING conversation_id;",
-      [name, creatorId]
+      [name, userid]
     );
 
     const { conversation_id } = insertConversation[0];
@@ -20,7 +22,20 @@ exports.createConversation = async (req, res) => {
       user_id
     }));
 
+    insertValues.push({
+      conversation_id: conversation_id,
+      user_id: userid
+    });
+
     await db.none(pgp.helpers.insert(insertValues, cs));
+
+    await db.none(
+      "UPDATE conversation\
+      SET latest_message = $1, latest_sender = $2\
+      WHERE conversation_id = $3",
+      ['', userid, conversation_id]
+    );
+
     res.status(200).send("Done");
     console.log("Query done");
   } catch (err) {
@@ -53,6 +68,23 @@ exports.getConversations = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.leaveConversation = async (req, res) => {
+  const userId = req.user.id;
+  const { conversation } = req.body;
+  
+  try {
+    await db.none(
+      "DELETE FROM participant\
+      WHERE conversation_id = $1 AND user_id = $2;",
+      [conversation, userId]
+    );
+
+    res.status(200).send("Conversation left");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
 
 exports.getMessages = async (req, res) => {
   try {

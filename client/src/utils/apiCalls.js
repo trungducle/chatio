@@ -96,7 +96,7 @@ export const fetchRequests = async () => {
 
 export const sendRequest = async (recipientId) => {
   try {
-    axios.post('/requests', {
+    axios.post("/requests", {
       recipient: recipientId
     }, getAuthHeader());
   } catch (err) {
@@ -106,7 +106,7 @@ export const sendRequest = async (recipientId) => {
 
 export const rejectRequest = async (senderId) => {
   try {
-    axios.put('/requests/reject', {
+    axios.put("/requests/reject", {
       sender: senderId,
     }, getAuthHeader());
   } catch (err) {
@@ -116,7 +116,7 @@ export const rejectRequest = async (senderId) => {
 
 export const acceptRequest = async (senderId) => {
   try {
-    axios.put('/requests/accept', {
+    axios.put("/requests/accept", {
       sender: senderId,
     }, getAuthHeader());
   } catch (err) {
@@ -131,3 +131,24 @@ export const isFriend = async (contactId) => {
     console.log(err);
   }
 };
+
+export const createConversation = async (conversationName, users) => {
+  try {
+    axios.post("/conversations", {
+      name: conversationName, 
+      participantId: users
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const leaveConversation = async (conversationId) => {
+  try {
+    axios.put("/conversations", {
+      conversation: conversationId 
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+}

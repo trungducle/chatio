@@ -1,7 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { fetchRequests } from "../../utils/apiCalls";
-import { AuthContext } from "../../contexts/AuthContext";
-import { rejectRequest, acceptRequest } from "../../utils/apiCalls";
+import React, { useState, useEffect } from "react";
+import { rejectRequest, acceptRequest, fetchRequests } from "../../utils/apiCalls";
 import "./friendrequest.css";
 // import socket from "../../socket";
 
@@ -33,7 +31,6 @@ const Request = (props) => {
 
 const FriendRequest = () => {
   const [requests, setRequests] = useState([]);
-  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {

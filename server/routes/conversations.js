@@ -2,6 +2,7 @@ const express = require("express");
 const {
   createConversation,
   getConversations,
+  leaveConversation,
   getMessages,
   postNewMessage
 } = require("../controllers/conversationController");
@@ -13,7 +14,8 @@ conversationRouter.use(authenticateToken);
 
 conversationRouter.route("/")
   .get(getConversations)
-  .post(createConversation);
+  .post(createConversation)
+  .put(leaveConversation);
 
 conversationRouter.route("/:id")
   .all((req, res, next) => {

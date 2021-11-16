@@ -3,10 +3,11 @@ const { db } = require("../config/database");
 exports.getFriends = async (req, res) => {
   try {
     const result = await db.any(
-      "SELECT full_name FROM list_friends($1)",
+      "SELECT friend_id, full_name FROM list_friends($1)",
       [req.user.id]
     );
     res.status(200).json(result.map((friend) => ({
+      friendId: friend.friend_id,
       friendName: friend.full_name
     })));
   } catch (err) {

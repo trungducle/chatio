@@ -59,11 +59,22 @@
   height: 100%;
   overflow-y: scroll;
   padding-top: 10px;
+  position: relative;
 }
 
 #no-conversation {
   font-size: 50px;
   color: rgb(145, 145, 145);
+}
+
+.empty-conversation {
+  font-size: 50px;
+  color: rgb(145, 145, 145);
+  margin: 0;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  text-align: center;
 }
 
 .message-item {
