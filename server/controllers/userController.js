@@ -6,16 +6,28 @@ exports.searchUserByName = async (req, res) => {
     if (typeof value === "string") {
       const namePatterns = value.split(" ").map(n => `%${n}%`);
       const result = await db.any(
-        "SELECT user_id, concat_ws(' ', first_name, last_name) full_name, email\
-        FROM account\
-        WHERE (concat(first_name, last_name)) LIKE ALL (ARRAY[$1:csv]);",
-        [namePatterns]
+        "(SELECT * FROM search_users(\
+          _searcher_id := $1,\
+          _pattern := ARRAY[$2:csv],\
+          _is_friend := TRUE\
+        ) LIMIT 10)\
+        UNION\
+        (SELECT * FROM search_users(\
+          _searcher_id := $1,\
+          _pattern := ARRAY[$2:csv],\
+          _is_friend := FALSE\
+        ) LIMIT 20)\
+        ORDER BY is_friend DESC, is_pending DESC;",
+        [req.user.id, namePatterns]
       );
-  
-      res.status(200).json(result);
-    } 
+
+      const friends = result.filter((user) => user.is_friend);
+      const strangers = result.filter((user) => !user.is_friend);
+
+      res.status(200).json({ friends, strangers });
+    }
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err });
   }
 };
 
@@ -28,7 +40,7 @@ exports.updateEmail = async (req, res) => {
     );
     res.status(200).send("Query done");
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err });
   }
 };
 

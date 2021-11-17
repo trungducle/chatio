@@ -3,10 +3,10 @@ const { db } = require("../config/database");
 exports.getFriendRequests = async (req, res) => {
   try {
     const result = await db.any(
-      "SELECT concat_ws(' ', a.first_name, a.last_name) full_name, a.email, pd.sender_id\
-        FROM pending_request pd JOIN account a\
-        ON pd.sender_id = a.user_id\
-        WHERE pd.recipient_id = $1;",
+      "SELECT concat_ws(' ', a.first_name, a.last_name) full_name, a.email, pr.sender_id\
+      FROM pending_request pr JOIN account a\
+      ON pr.sender_id = a.user_id\
+      WHERE pr.recipient_id = $1;",
       [req.user.id]
     );
 
@@ -64,4 +64,19 @@ exports.sendFriendRequest = async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-}
+};
+
+exports.cancelRequest = async (req, res) => {
+  const { to } = req.query;
+  console.log(to);
+  try {
+    await db.none(
+      "DELETE FROM pending_request\
+      WHERE sender_id = $1 AND recipient_id = $2",
+      [req.user.id, to]
+    );
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+};

@@ -1,35 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { fetchUsers, fetchRequests, sendRequest, isFriend } from "../../utils/apiCalls";
+import { fetchUsers, fetchRequests, sendRequest, cancelRequest } from "../../utils/apiCalls";
 import { Link } from "react-router-dom";
 import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
 
 const User = (props) => {
-  const [friendStatus, setFriendStatus] = useState();
   const fullname = props.userfullname;
-  // const email = props.useremail;
   const contactId = props.userid;
 
-  const checkFriendStatus = async () => {
-    const result = await isFriend(contactId);
-    setFriendStatus(result.data.isFriend);
-  }
+  const [isRequestSent, setIsRequestSent] = useState(props.isPending);
 
-  const sendFriendRequest = async () => {
-    await sendRequest(contactId);
-  }
+  const toggleRequest = async () => {
+    if (isRequestSent) {
+      await cancelRequest(contactId);
+      setIsRequestSent(false);
+    } else {
+      await sendRequest(contactId);
+      setIsRequestSent(true);
+    }
+  };
 
   return (
-    <div className="user-search" onClick={checkFriendStatus}>
+    <div className="user-search">
       <div className="info">
         <div className="user-fullname">{fullname}</div>
-        {/* <div className="user-email">{email}</div> */}
       </div>
-      {friendStatus === 1
-        ? <button className="chat-btn">Chat Now</button>
-        : friendStatus === 0 ?
-        <button className="add-btn" onClick={sendFriendRequest}>Add Friend</button>
-        : null
+      {props.isFriend
+        ? (
+          <button className="chat-btn">Chat Now</button>
+        ) : (
+          <button
+            className={isRequestSent ? "add-btn req-sent" : "add-btn"}
+            onClick={toggleRequest}
+          >
+            {isRequestSent ? "Cancel Request" : "Add Friend"}
+          </button>
+        )
       }
     </div>
   );
@@ -52,25 +58,42 @@ const Menu = (props) => {
 const SideMenu = (props) => {
   const type = props.contact ? "contact" : "request";
   const [input, setInput] = useState('');
-  const [results, setResults] = useState([]);
+  const [visibleLabel, setVisibleLabel] = useState(false);
+  const [friendsResult, setFriendsResult] = useState([]);
+  const [strangersResult, setStrangersResult] = useState([]);
   const [requests, setRequests] = useState([]);
 
   const handleChange = (event) => {
     setInput(event.target.value);
-  }
+  };
 
   useEffect(() => {
     if (input) {
       (async () => {
         const res = await fetchUsers(input);
-        setResults(res.data.map((result) => ({
-          userid: result.user_id,
-          userfullname: result.full_name,
-          useremail: result.email
+
+        setFriendsResult(res.data.friends.map((user) => ({
+          userId: user.user_id,
+          fullName: user.full_name,
+          email: user.email,
+          isFriend: user.is_friend,
+          isPending: user.is_pending
         })));
+
+        setStrangersResult(res.data.strangers.map((user) => ({
+          userId: user.user_id,
+          fullName: user.full_name,
+          email: user.email,
+          isFriend: user.is_friend,
+          isPending: user.is_pending
+        })));
+
+        setVisibleLabel(true);
       })();
     } else {
-      setResults([]);
+      setFriendsResult([]);
+      setStrangersResult([]);
+      setVisibleLabel(false);
     }
   }, [input]);
 
@@ -97,14 +120,32 @@ const SideMenu = (props) => {
         />
       </div>
       <div className="user-search-list">
-        {results.map((result) => (
-          <User
-            userid={result.userid}
-            userfullname={result.userfullname}
-            useremail={result.useremail}
-            key={results.indexOf(result)}
-          />
-        ))}
+        <div id="friends-result">
+          <h5 className={visibleLabel && "visible-label"}>FRIENDS</h5>
+          {friendsResult.map((result) => (
+            <User
+              userid={result.userId}
+              userfullname={result.fullName}
+              useremail={result.email}
+              isFriend={result.isFriend}
+              isPending={result.isPending}
+              key={friendsResult.indexOf(result)}
+            />
+          ))}
+        </div>
+        <div id="strangers-result">
+          <h5 className={visibleLabel && "visible-label"}>OTHERS</h5>
+          {strangersResult.map((result) => (
+            <User
+              userid={result.userId}
+              userfullname={result.fullName}
+              useremail={result.email}
+              isFriend={result.isFriend}
+              isPending={result.isPending}
+              key={strangersResult.indexOf(result)}
+            />
+          ))}
+        </div>
       </div>
       <div className="menu">
         <Menu lists active={type === "contact" ? "true" : "false"} />

@@ -81,9 +81,9 @@ export const postNewMessage = async (conversationId, message) => {
   }
 };
 
-export const fetchUsers = async (userName) => {
+export const fetchUsers = async (pattern) => {
   try {
-    return await axios.get(`/users/search?value=${userName}`);
+    return await axios.get(`/users/search?value=${pattern}`, getAuthHeader());
   } catch (err) {
     console.log(err);
   }
@@ -110,6 +110,14 @@ export const sendRequest = async (recipientId) => {
     axios.post("/requests", {
       recipient: recipientId
     }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const cancelRequest = async (recipientId) => {
+  try {
+    axios.delete(`/requests?to=${recipientId}`, getAuthHeader());
   } catch (err) {
     console.log(err);
   }

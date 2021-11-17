@@ -6,6 +6,8 @@ const { authenticateToken } = require("../middlewares/auth");
 const userRouter = express.Router();
 
 userRouter.use(express.json());
+userRouter.use(authenticateToken);
+
 userRouter.get("/search", searchUserByName);
 userRouter.get("/friends", authenticateToken, checkIsFriend);
 
