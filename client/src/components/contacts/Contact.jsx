@@ -37,7 +37,8 @@ const Contact = () => {
       {contacts.map((contact) => (
         <Friend
           name={contact.name}
-          key={contacts.indexOf(contact)}
+          key={contacts.indexOf(contact)
+        }
         />
       ))}
     </div>

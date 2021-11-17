@@ -13,13 +13,15 @@ import {
 } from "react-router-dom";
 import socket from "./socket";
 
-const Home = (props) => (
-  <>
-    <NavigationPanel chat />
-    <ChatMenu {...props} />
-    <Conversation />
-  </>
-);
+const Home = (props) => {
+  return (
+    <>
+      <NavigationPanel chat />
+      <ChatMenu {...props} />
+      <Conversation />
+    </>
+  )
+};
 
 const Contacts = () => {
   return (
@@ -50,10 +52,13 @@ const AuthApp = () => {
   // fetch conversations on first load
   useEffect(() => {
     (async () => {
-      setRoomList({ value: [], isLoading: true })
+      setRoomList({ value: [], isLoading: true });
       try {
         const result = await fetchConversations();
-        setRoomList({ value: result.data, isLoading: false });
+        setRoomList({
+          value: result.data,
+          isLoading: false
+        });
         socket.emit("join rooms", result.data.map((conv) => conv.id));
       } catch (err) {
         console.log(err);

@@ -9,7 +9,7 @@ import "./login.css";
 export const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, dispatch } = useContext(AuthContext);
+  const { isLoading, dispatch, error } = useContext(AuthContext);
   const history = useHistory();
 
   const handleSubmit = (e) => {
@@ -24,6 +24,9 @@ export const LogIn = () => {
 
   return (
     <div id="login-wrapper">
+      <div id="auth-error" className={error.message && "show-error"}>
+        <strong>Wrong email or password.</strong>
+      </div>
       <div id="login-box">
         <h2 className="app-name">Welcome to ChatIO!</h2>
         <form method="post" id="login-form" onSubmit={handleSubmit}>

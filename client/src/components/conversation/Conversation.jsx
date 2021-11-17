@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { CurrentConversationContext } from "../../contexts/CurrentConversationContext";
 import socket from "../../socket";
-import { fetchMessages, postNewMessage } from "../../utils/apiCalls";
+import { fetchMessages, postNewMessage, leaveConversation } from "../../utils/apiCalls";
 import "./conversation.css";
 
 const Message = (props) => {
@@ -13,16 +13,26 @@ const Message = (props) => {
   );
 };
 
-const ConversationTopBar = (props) => (
-  <div className="conversation-top">
-    <div id="room-name">{props.conversationName}</div>
-    <button id="leave-btn">Leave</button>
-    <button id="customize-btn">Customize</button>
-  </div>
+const ConversationTopBar = (props) => {
+  const conversationId = props.conversationId;
 
-);
+  const leaveConv = async (e) => {
+    await leaveConversation(conversationId);
 
-const MessageBox = () => {
+    window.location.reload(); //again, need reconsideration
+  }
+
+  return (
+    <div className="conversation-top">
+      <div id="room-name">{props.conversationName}</div>
+      <button id="leave-btn" onClick={leaveConv}>Leave</button>
+      <button id="customize-btn">Customize</button>
+    </div>
+  );
+};
+
+const MessageBox = (props) => {
+  const isNew = props.isNew;
   const [messages, setMessages] = useState({
     value: [],
     isLoading: false
@@ -37,7 +47,7 @@ const MessageBox = () => {
 
   const scrollToBottom = () => {
     messageEndRef.current.scrollIntoView({ behavior: "auto" });
-  }
+  };
 
   const sendMessage = async (event) => {
     if ((event.type === "keydown" && event.key === "Enter")
@@ -106,7 +116,9 @@ const MessageBox = () => {
   return (
     <>
       <div id="message-display">
-        {messages.isLoading ? (
+        {isNew ? (
+          <div className="empty-conversation">Let's talk now!</div>
+        ) : messages.isLoading ? (
           <span id="messages-loading">Loading messages...</span>
         ) : messages.value.map((msg) => (
           <Message
@@ -144,8 +156,8 @@ const Conversation = () => {
     <div id="message-box">
       {conversation.id ?
         <>
-          <ConversationTopBar conversationName={conversation.name} />
-          <MessageBox />
+          <ConversationTopBar conversationName={conversation.name} conversationId={conversation.id} />
+          <MessageBox isNew={conversation.latestMessage.body === '' ? true : false} />
         </> : <span id="no-conversation">Start chatting now!</span>
       }
     </div>

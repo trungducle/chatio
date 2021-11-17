@@ -26,8 +26,12 @@ const LatestMessage = (props) => {
     <div
       className="latest-message"
     >
-      {display(
+      {props.latestMessage
+        ? display(
         `${props.latestSender}: ${props.latestMessage}`,
+        MAX_DISPLAY_LENGTH
+      ) : display(
+        "Conversation created! Let's have a chat!",
         MAX_DISPLAY_LENGTH
       )}
     </div>

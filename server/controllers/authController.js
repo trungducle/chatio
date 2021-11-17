@@ -11,12 +11,12 @@ exports.handleLogin = async (req, res) => {
     );
 
     if (!result) {
-      res.status(400).json({ error: "wrong email or password" });
+      return res.status(401).json({ error: "wrong email or password" });
     }
 
     const isMatchPassword = await bcrypt.compare(password, result.password);
     if (!isMatchPassword) {
-      res.status(400).json({ error: "wrong email or password" });
+      return res.status(401).json({ error: "wrong email or password" });
     }
 
     await db.none(
@@ -33,7 +33,7 @@ exports.handleLogin = async (req, res) => {
     });
     res.status(200).json({ accessToken });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: err });
   }
 };
 
@@ -47,7 +47,7 @@ exports.handleSignup = async (req, res) => {
     );
 
     if (result.length > 0) {
-      res.status(400).send("Email already exists");
+      return res.status(400).send("Email already exists");
     }
 
     const accountColSet = new pgp.helpers.ColumnSet(

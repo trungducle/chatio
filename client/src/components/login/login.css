@@ -3,6 +3,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -17,6 +18,22 @@
 
 .app-name {
   text-align: center;
+}
+
+#auth-error {
+  display: none;
+  background-color: rgb(255, 176, 176);
+  color: red;
+  padding: 10px;
+  font-size: 12px;
+  border: 1px double red;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  width: 25%;
+}
+
+#auth-error.show-error {
+  display: block;
 }
 
 form#login-form .form-field {
