@@ -5,31 +5,31 @@ import LogoBar from "../logoBar/logoBar";
 import "./sidemenu.css";
 
 const User = (props) => {
-  const [friendStatus, setFriendStatus] = useState("");
+  const [friendStatus, setFriendStatus] = useState();
   const fullname = props.userfullname;
-  const email = props.useremail;
+  // const email = props.useremail;
   const contactId = props.userid;
 
-  useEffect(() => {
-    (async () => {
-      const result = await isFriend(contactId);
-      setFriendStatus(result.data.isFriend);
-    })();
-  }, [fullname]);
+  const checkFriendStatus = async () => {
+    const result = await isFriend(contactId);
+    setFriendStatus(result.data.isFriend);
+  }
 
   const sendFriendRequest = async () => {
     await sendRequest(contactId);
   }
 
   return (
-    <div className="user-search">
+    <div className="user-search" onClick={checkFriendStatus}>
       <div className="info">
         <div className="user-fullname">{fullname}</div>
-        <div className="user-email">{email}</div>
+        {/* <div className="user-email">{email}</div> */}
       </div>
       {friendStatus === 1
         ? <button className="chat-btn">Chat Now</button>
-        : <button className="add-btn" onClick={sendFriendRequest}>Add Friend</button>
+        : friendStatus === 0 ?
+        <button className="add-btn" onClick={sendFriendRequest}>Add Friend</button>
+        : null
       }
     </div>
   );
@@ -90,7 +90,7 @@ const SideMenu = (props) => {
         <LogoBar />
         <input
           id="user-search-bar"
-          type="text"
+          type="search"
           placeholder="Search..."
           value={input}
           onChange={handleChange}
