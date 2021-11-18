@@ -37,13 +37,41 @@ li:hover {
   color: #fff;
 }
 
-button#logout-btn {
+#setting-btns {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+#logout-btn {
   background-color: #44475a;
-  padding: 20px 16px;
+  padding: 18px 16px;
   border: none;
 }
 
-button#logout-btn:hover {
+#manage-btn {
+  background-color: #44475a;
+  padding: 18px 16px;
+  border: none;
+}
+
+#setting-btn {
+  background-color: #44475a;
+  padding: 18px 16px;
+  border: none;
+}
+
+#logout-btn:hover {
+  background-color: #282A36;
+  cursor: pointer;
+}
+
+#setting-btn:hover {
+  background-color: #282A36;
+  cursor: pointer;
+}
+
+#manage-btn:hover {
   background-color: #282A36;
   cursor: pointer;
 }

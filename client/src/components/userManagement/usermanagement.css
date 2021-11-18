@@ -1,0 +1,110 @@
+#um-background {
+  width: 100vw;
+  height: 100vh;
+  background-color: #44475a;
+  opacity: 0.9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  z-index: 500;
+}
+
+#um-container {
+  width: 30%;
+  border-radius: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 25px;
+}
+
+#close-um {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#close-um button {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.um-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 90%;
+}
+
+#account-management {
+  text-align: left;
+  width: 80%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+#account-management label {
+  margin-bottom: 10px;
+}
+
+#account-management .edit-enable {
+  color: blue;
+  text-decoration: underline;
+  float: right;
+}
+
+.update-input {
+  margin: 2px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#um-buttons {
+  text-align: right;
+  margin-top: auto;
+}
+
+.warning {
+  color: #f44336;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+#um-buttons button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cancelum-btn {
+  background-color: #f44336;
+}
+
+.cancelum-btn:hover {
+  opacity: 0.8;
+}
+
+.updateum-btn {
+  background-color: #008CBA;
+}
+
+.updateum-btn:hover {
+  opacity: 0.8;
+}
+
+.hide {
+  display: none;
+}

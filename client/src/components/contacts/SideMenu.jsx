@@ -33,7 +33,7 @@ const User = (props) => {
             className={isRequestSent ? "add-btn req-sent" : "add-btn"}
             onClick={toggleRequest}
           >
-            {isRequestSent ? "Cancel Request" : "Add Friend"}
+            {isRequestSent ? "Cancel" : "Add Friend"}
           </button>
         )
       }
@@ -121,7 +121,7 @@ const SideMenu = (props) => {
       </div>
       <div className="user-search-list">
         <div id="friends-result">
-          <h5 className={visibleLabel && "visible-label"}>FRIENDS</h5>
+          <h5 className={visibleLabel ? "visible-label" : undefined}>FRIENDS</h5>
           {friendsResult.map((result) => (
             <User
               userid={result.userId}
@@ -134,7 +134,7 @@ const SideMenu = (props) => {
           ))}
         </div>
         <div id="strangers-result">
-          <h5 className={visibleLabel && "visible-label"}>OTHERS</h5>
+          <h5 className={visibleLabel ? "visible-label" : undefined}>OTHERS</h5>
           {strangersResult.map((result) => (
             <User
               userid={result.userId}

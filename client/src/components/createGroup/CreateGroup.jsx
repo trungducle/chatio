@@ -46,15 +46,15 @@ const CreateGroup = (props) => {
   }
 
   return (
-    <div className="modal-background">
-      <div className="modal-container">
-        <div className="close-modal">
+    <div id="cg-background">
+      <div id="cg-container">
+        <div id="close-cg">
           <button onClick={() => closeModal(false)}>&#10005;</button>
         </div>
         <div className="title-box">
           <h3 className="title">Create group to chat with your friends</h3>
         </div>
-        <div className="body">
+        <div className="cg-body">
           <form id="friend-list" onSubmit={(e) => handleSubmit(e)}>
             <input className="name-input" type="text" placeholder="Group Name" required />
             <h4 className="title">Choose who to add into the group:</h4>
@@ -67,9 +67,9 @@ const CreateGroup = (props) => {
                 />
               ))}
             </div>
-            <div className="buttons">
-              <button className="cancel-btn" onClick={() => closeModal(false)}>Cancel</button>
-              <button className="create-btn" type="submit">Create</button>
+            <div id="cg-buttons">
+              <button className="cancelcg-btn" onClick={() => closeModal(false)}>Cancel</button>
+              <button className="createg-btn" type="submit">Create</button>
             </div>
           </form>
         </div>

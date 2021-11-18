@@ -1,4 +1,5 @@
 const { db } = require("../config/database");
+const bcrypt = require("bcrypt");
 
 exports.searchUserByName = async (req, res) => {
   const { value } = req.query;
@@ -34,13 +35,22 @@ exports.searchUserByName = async (req, res) => {
 exports.updateEmail = async (req, res) => {
   const { email } = req.body;
   try {
+    const result = await db.any(
+      "SELECT * FROM account WHERE email = $1",
+      [email]
+    );
+
+    if (result.length > 0) {
+      return res.status(401).json({ error: "Email already exists" });
+    }
+
     await db.none(
       "UPDATE account SET email = $1 WHERE user_id = $2",
       [email, req.user.id]
     );
-    res.status(200).send("Query done");
+    res.status(200).json({ message: "Information updated!" });
   } catch (err) {
-    res.status(500).json({ message: err });
+    res.status(500).json({ error: err });
   }
 };
 
@@ -59,10 +69,13 @@ exports.updateUserName = async (req, res) => {
 
 exports.updatePassword = async (req, res) => {
   const { password } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
     await db.none(
       "UPDATE account SET password = $1 WHERE user_id = $2",
-      [password, req.user.id]
+      [hashedPassword, req.user.id]
     );
     res.status(200).send("Query done");
   } catch (err) {

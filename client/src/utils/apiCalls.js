@@ -171,3 +171,33 @@ export const leaveConversation = async (conversationId) => {
     console.log(err);
   }
 }
+
+export const updateUserName = async (firstName, lastName) => {
+  try {
+    axios.put("/info/fullname", {
+      firstName, lastName
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const updateEmail = async (email) => {
+  try {
+    axios.put("/info/email", {
+      email
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const updatePassword = async (password) => {
+  try {
+    return axios.put("/info/password", {
+      password
+    }, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+}
