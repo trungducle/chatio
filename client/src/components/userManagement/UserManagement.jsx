@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useReducer } from "react";
 import { updateUserName, updateEmail, updatePassword } from "../../utils/apiCalls";
+import { updateReducer } from "../../reducers/updateReducer";
 import "./usermanagement.css";
 
 const UserManagement = (props) => {
@@ -16,29 +17,31 @@ const UserManagement = (props) => {
   const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [editPw, setEditPw] = useState(false);
+  const [updateState, updateDispatch] = useReducer(updateReducer, {
+    message: null,
+    error: null
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (window.confirm("Update your change?")) {
       if (firstName.current.value && lastName.current.value) {
-        await updateUserName(firstName.current.value, lastName.current.value);
+        await updateUserName(firstName.current.value, lastName.current.value, updateDispatch);
       } else if (!firstName.current.value && lastName.current.value) {
-        await updateUserName(currentfName, lastName.current.value);
-      } else if (firstName.current.value && !lastName.current.value) {
-        await updateUserName(firstName.current.value, currentlName);
+        await updateUserName(currentfName, lastName.current.value, updateDispatch);
+      } else if (firstName.current.value && !lastName.current.value, updateDispatch) {
+        await updateUserName(firstName.current.value, currentlName, updateDispatch);
       }
-  
+
       if (email.current.value) {
-        await updateEmail(email.current.value);
+        await updateEmail(email.current.value, updateDispatch);
       }
-  
+
       if (password.current.value) {
-        await updatePassword(password.current.value);
+        await updatePassword(password.current.value, updateDispatch);
       }
     }
-
-    window.location.reload();
   }
 
   const handleEditName = () => {
@@ -73,10 +76,15 @@ const UserManagement = (props) => {
         </div>
         <div className="title-box">
           <h3 className="title">Manage your account information</h3>
-          <div className="warning">Warning: You need to logout for the changes to take effect.</div>
+          <div className="warning">
+            Warning: You may need to logout for the changes to take effect.
+          </div>
+          <div className={updateState.message ? "update-success show" : "update-success"}>
+            Updated! Please logout for the changes to take effect.
+          </div>
         </div>
         <div className="um-body">
-          <form id="account-management" onSubmit={(e) => handleSubmit(e)}>
+          <form id="account-management" onSubmit={handleSubmit}>
             <label htmlFor="um-fname">
               Full Name: {currentfName + ' ' + currentlName}
               <span className="edit-enable" onClick={handleEditName}>Edit</span>
@@ -110,6 +118,9 @@ const UserManagement = (props) => {
               pattern='^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
               ref={email}
             />
+            <div className={updateState.error ? "update-error show" : "update-error"}>
+              Email already in use with another account!
+            </div>
             <label htmlFor="um-pw">
               Password: **********
               <span className="edit-enable" onClick={handleEditPw}>Edit</span>

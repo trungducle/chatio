@@ -174,32 +174,38 @@ export const leaveConversation = async (conversationId) => {
   }
 }
 
-export const updateUserName = async (firstName, lastName) => {
+export const updateUserName = async (firstName, lastName, dispatch) => {
+  dispatch({ type: "UPDATE_START" });
   try {
-    axios.put("/info/fullname", {
+    const result = await axios.put("/info/fullname", {
       firstName, lastName
     }, getAuthHeader());
+    dispatch({ type: "UPDATE_SUCCESS", payload: result.data });
   } catch (err) {
-    console.log(err);
+    dispatch({ type: "UPDATE_FAILURE", payload: err.response.data });
   }
 }
 
-export const updateEmail = async (email) => {
+export const updateEmail = async (email, dispatch) => {
+  dispatch({ type: "UPDATE_START" });
   try {
-    axios.put("/info/email", {
+    const result = await axios.put("/info/email", {
       email
     }, getAuthHeader());
+    dispatch({ type: "UPDATE_SUCCESS", payload: result.data });
   } catch (err) {
-    console.log(err);
+    dispatch({ type: "UPDATE_FAILURE", payload: err.response.data });
   }
 }
 
-export const updatePassword = async (password) => {
+export const updatePassword = async (password, dispatch) => {
+  dispatch({ type: "UPDATE_START" });
   try {
-    return axios.put("/info/password", {
+    const result = await axios.put("/info/password", {
       password
     }, getAuthHeader());
+    dispatch({ type: "UPDATE_SUCCESS", payload: result.data });
   } catch (err) {
-    console.log(err);
+    dispatch({ type: "UPDATE_FAILURE", payload: err.response.data });
   }
 }

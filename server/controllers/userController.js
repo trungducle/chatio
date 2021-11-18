@@ -41,7 +41,7 @@ exports.updateEmail = async (req, res) => {
     );
 
     if (result.length > 0) {
-      return res.status(401).json({ error: "Email already exists" });
+      return res.status(400).json({ error: "Email already exists" });
     }
 
     await db.none(
@@ -61,9 +61,9 @@ exports.updateUserName = async (req, res) => {
       "UPDATE account SET first_name = $1, last_name = $2 WHERE user_id = $3",
       [firstName, lastName, req.user.id]
     );
-    res.status(200).send("Query done");
+    res.status(200).json({ message: "Information updated!" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };
 
@@ -77,8 +77,8 @@ exports.updatePassword = async (req, res) => {
       "UPDATE account SET password = $1 WHERE user_id = $2",
       [hashedPassword, req.user.id]
     );
-    res.status(200).send("Query done");
+    res.status(200).json({ message: "Information updated!" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };

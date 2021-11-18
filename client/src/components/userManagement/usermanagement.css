@@ -78,6 +78,24 @@
   font-size: 14px;
 }
 
+.update-error {
+  display: none;
+  color: #f44336;
+}
+
+.update-success {
+  display: none;
+  color: #32a852;
+}
+
+.update-error.show {
+  display: block;
+}
+
+.update-success.show {
+  display: block;
+}
+
 #um-buttons button {
   margin: 5px;
   padding: 10px 15px;
