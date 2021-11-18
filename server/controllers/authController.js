@@ -47,7 +47,7 @@ exports.handleSignup = async (req, res) => {
     );
 
     if (result.length > 0) {
-      return res.status(400).send("Email already exists");
+      return res.status(401).json({ error: "Email already exists" });
     }
 
     const accountColSet = new pgp.helpers.ColumnSet(
@@ -68,7 +68,7 @@ exports.handleSignup = async (req, res) => {
 
     res.status(200).json({ message: "New user created" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };
 
@@ -81,6 +81,6 @@ exports.handleLogout = async (req, res) => {
     );
     res.status(200).json({ message: "Logged out" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };

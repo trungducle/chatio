@@ -7,7 +7,7 @@ const LogoBar = () => {
 
   return (
     <div className="logoBar">
-      <img src={require("./chatio.png")} alt="Chatio Logo" className="logo"/>
+      <img src={require("./chatio.png").default} alt="Chatio Logo" className="logo"/>
       <div 
         className="new-conversation" 
         onClick={() => {

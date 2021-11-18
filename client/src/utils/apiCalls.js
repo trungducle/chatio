@@ -22,15 +22,17 @@ export const loginCall = async (userCredentials, dispatch) => {
     localStorage.setItem("a_token", result.data.accessToken);
     dispatch(loggedIn(result.data));
   } catch (err) {
-    dispatch(loginFailure(err));
+    dispatch(loginFailure(err.response.data));
   }
 };
 
-export const signupCall = async (userInfo) => {
+export const signupCall = async (userInfo, dispatch) => {
+  dispatch({ type: "SIGNUP_START" });
   try {
-    await axios.post("/auth/signup", userInfo);
+    const result = await axios.post("/auth/signup", userInfo);
+    dispatch({ type: "SIGNUP_SUCCESS", payload: result.data });
   } catch (err) {
-    console.log(err);
+    dispatch({ type: "SIGNUP_FAILURE", payload: err.response.data });
   }
 };
 
@@ -154,7 +156,7 @@ export const isFriend = async (contactId) => {
 export const createConversation = async (conversationName, users) => {
   try {
     axios.post("/conversations", {
-      name: conversationName, 
+      name: conversationName,
       participantId: users
     }, getAuthHeader());
   } catch (err) {
@@ -165,7 +167,7 @@ export const createConversation = async (conversationName, users) => {
 export const leaveConversation = async (conversationId) => {
   try {
     axios.put("/conversations", {
-      conversation: conversationId 
+      conversation: conversationId
     }, getAuthHeader());
   } catch (err) {
     console.log(err);

@@ -40,3 +40,28 @@ export const authReducer = (state, action) => {
       return state;
   }
 };
+
+export const signupReducer = (state, action) => {
+  switch (action.type) {
+    case "SIGNUP_START":
+      return {
+        message: null,
+        isLoading: true,
+        error: null
+      };
+    case "SIGNUP_SUCCESS":
+      return {
+        message: action.payload,
+        isLoading: false,
+        error: null
+      };
+    case "SIGNUP_FAILURE":
+      return {
+        message: null,
+        isLoading: false,
+        error: action.payload
+      };
+    default:
+      return state;
+  }
+};
