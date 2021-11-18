@@ -72,7 +72,7 @@ exports.getConversations = async (req, res) => {
 exports.leaveConversation = async (req, res) => {
   const userId = req.user.id;
   const { conversation } = req.body;
-  
+
   try {
     await db.none(
       "DELETE FROM participant\
@@ -80,7 +80,7 @@ exports.leaveConversation = async (req, res) => {
       [conversation, userId]
     );
 
-    res.status(200).send("Conversation left");
+    res.status(200).json({ message: "Left conversation" });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -117,16 +117,9 @@ exports.postNewMessage = async (req, res) => {
       [req.conversationId, body, req.user.id]
     );
 
-    await db.none(
-      "UPDATE conversation\
-      SET latest_message = $1, latest_sender = $2\
-      WHERE conversation_id = $3",
-      [body, req.user.id, req.conversationId]
-    );
-
-    res.status(200).send("Inserted a new message");
+    res.status(200).json({ message: "Inserted a new message" });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };
 
@@ -143,6 +136,6 @@ exports.searchMessage = async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };

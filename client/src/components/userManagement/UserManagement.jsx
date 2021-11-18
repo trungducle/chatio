@@ -1,12 +1,13 @@
 import React, { useRef, useState, useReducer } from "react";
 import { updateUserName, updateEmail, updatePassword } from "../../utils/apiCalls";
 import { updateReducer } from "../../reducers/updateReducer";
+import jwt_decode from "jwt-decode";
 import "./usermanagement.css";
 
 const UserManagement = (props) => {
   const closeModal = props.closeModal;
   const accessToken = localStorage.getItem("a_token");
-  const currentInfo = JSON.parse(window.atob(accessToken.split('.')[1].replace('-', '+').replace('_', '/')));
+  const currentInfo = jwt_decode(accessToken);
   const currentfName = currentInfo.firstName;
   const currentlName = currentInfo.lastName;
   const currentEmail = currentInfo.email;
@@ -42,7 +43,7 @@ const UserManagement = (props) => {
         await updatePassword(password.current.value, updateDispatch);
       }
     }
-  }
+  };
 
   const handleEditName = () => {
     if (editName) {
@@ -50,7 +51,7 @@ const UserManagement = (props) => {
     } else {
       setEditName(true);
     }
-  }
+  };
 
   const handleEditEmail = () => {
     if (editEmail) {
@@ -58,7 +59,7 @@ const UserManagement = (props) => {
     } else {
       setEditEmail(true);
     }
-  }
+  };
 
   const handleEditPw = () => {
     if (editPw) {
@@ -66,7 +67,7 @@ const UserManagement = (props) => {
     } else {
       setEditPw(true);
     }
-  }
+  };
 
   return (
     <div id="um-background">
