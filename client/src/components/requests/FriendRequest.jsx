@@ -11,10 +11,12 @@ const Request = (props) => {
 
   const accRequest = async (e) => {
     await acceptRequest(userid);
+    window.location.reload();
   }
 
   const declineRequest = async (e) => {
     await rejectRequest(userid);
+    window.location.reload();
   }
 
   return (

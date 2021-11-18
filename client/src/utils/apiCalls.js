@@ -99,6 +99,14 @@ export const fetchContacts = async () => {
   }
 };
 
+export const deleteContact = async (userid) => {
+  try {
+    await axios.delete(`/contacts/${userid}`, getAuthHeader());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export const fetchRequests = async () => {
   try {
     return await axios.get("/requests", getAuthHeader());

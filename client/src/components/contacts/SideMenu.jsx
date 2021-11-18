@@ -27,7 +27,8 @@ const User = (props) => {
       </div>
       {props.isFriend
         ? (
-          <button className="chat-btn">Chat Now</button>
+          // <button className="chat-btn">Chat Now</button>
+          <></>
         ) : (
           <button
             className={isRequestSent ? "add-btn req-sent" : "add-btn"}

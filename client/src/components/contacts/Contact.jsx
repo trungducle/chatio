@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { fetchContacts } from "../../utils/apiCalls";
+import { fetchContacts, deleteContact } from "../../utils/apiCalls";
 import "./contact.css";
 
 const Friend = (props) => {
   const name = props.name;
-  const email = props.email;
+  const userid= props.userid;
+
+  const unFriendHandle = async () => {
+    await deleteContact(userid);
+
+    window.location.reload();
+  }
 
   return (
     <div className="friend">
       <div className="friend-info">
         <div className="friend-name">{name}</div>
-        <div className="friend-mail">{email}</div>
       </div>
-      <button className="unfriend-btn">Unfriend</button>
-      <button className="contact-friend-btn">Chat Now</button>
+      <button className="unfriend-btn" onClick={unFriendHandle}>Unfriend</button>
+      {/* <button className="contact-friend-btn">Chat Now</button> */}
     </div>
   );
 }
@@ -24,9 +29,9 @@ const Contact = () => {
   useEffect(() => {
     (async () => {
       const result = await fetchContacts();
-      console.log(result);
       setContacts(result.data.map((contact) => ({
-        name: contact.friendName
+        name: contact.friendName,
+        userid: contact.friendId
       })));
     })();
   }, []);
@@ -37,6 +42,7 @@ const Contact = () => {
       {contacts.map((contact) => (
         <Friend
           name={contact.name}
+          userid={contact.userid}
           key={contacts.indexOf(contact)
         }
         />
