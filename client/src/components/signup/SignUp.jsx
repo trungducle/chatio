@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useReducer, useRef } from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import { signupCall } from "../../utils/apiCalls";
+import { signupReducer } from "../../reducers/authReducer";
 import "./signup.css";
 
 export const SignUp = () => {
@@ -11,39 +12,38 @@ export const SignUp = () => {
   const password = useRef();
   const confirmPassword = useRef();
   const history = useHistory();
+  const [signupState, signupDispatch] = useReducer(signupReducer, {
+    message: null,
+    isLoading: false,
+    error: null
+  });
 
   const isSamePassword = () => {
-    console.log(`password: ${password.current.value}`);
-    console.log(`retyped password: ${confirmPassword.current.value}`);
     return confirmPassword.current.value === password.current.value;
   };
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(password.current.value);
-    console.log(confirmPassword.current.value);
-
     if (!isSamePassword()) {
       confirmPassword.current.setCustomValidity("Password doesn't match!");
     } else {
-      setIsLoading(true);
       signupCall({
         firstName: firstName.current.value,
         lastName: lastName.current.value,
         email: email.current.value,
         password: password.current.value
-      });
-      setIsLoading(false);
-      console.log("New user created");
-      history.push("/");
+      }, signupDispatch);
     }
   };
 
+  if (signupState.message) return <Redirect to="/" />;
+
   return (
     <div id="signup-wrapper">
+      <div id="auth-error" className={signupState.error?.error && "show-error"}>
+        <strong>Email already exists!</strong>
+      </div>
       <div id="signup-box">
         <h2 className="app-name">Sign up for ChatIO</h2>
         <form method="post" id="signup-form" onSubmit={handleSubmit}>
@@ -111,7 +111,7 @@ export const SignUp = () => {
           <div id="signup-button" className="form-field">
             <button
               type="submit"
-              className={isLoading ? "signup-loading" : null}
+              className={signupState.isLoading ? "signup-loading" : null}
             >Sign Up</button>
           </div>
           <div id="log-in" className="form-field">
