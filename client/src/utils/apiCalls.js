@@ -20,9 +20,15 @@ export const loginCall = async (userCredentials, dispatch) => {
   try {
     const result = await axios.post("/auth/login", userCredentials);
     localStorage.setItem("a_token", result.data.accessToken);
+    console.log(localStorage.getItem("a_token"));
     dispatch(loggedIn(result.data));
+    socket.auth = {
+      accessToken: localStorage.getItem("a_token")
+    };
+    socket.connect();
+    console.log(socket);
   } catch (err) {
-    dispatch(loginFailure(err.response.data));
+    dispatch(loginFailure(err.response?.data));
   }
 };
 

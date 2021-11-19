@@ -49,6 +49,8 @@ const AuthApp = () => {
     isLoading: false
   });
 
+  
+
   // fetch conversations on first load
   useEffect(() => {
     (async () => {
@@ -64,6 +66,13 @@ const AuthApp = () => {
         console.log(err);
       }
     })();
+
+    if (socket.disconnected) {
+      socket.auth = {
+        accessToken: localStorage.getItem("a_token")
+      };
+      socket.connect();
+    }
   }, []);
 
   return (

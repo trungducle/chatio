@@ -29,6 +29,7 @@ app.use("/info", userInfo);
 
 io.use((socket, next) => {
   const { accessToken } = socket.handshake.auth;
+  console.log(accessToken);
   if (!accessToken) {
     next(new Error("Invalid user"));
   }
