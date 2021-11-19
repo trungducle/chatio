@@ -26,7 +26,7 @@ const ConversationTopBar = (props) => {
     <div className="conversation-top">
       <div id="room-name">{props.conversationName}</div>
       <button id="leave-btn" onClick={leaveConv}>Leave</button>
-      <button id="customize-btn">Customize</button>
+      {/* <button id="customize-btn">Customize</button> */}
     </div>
   );
 };
