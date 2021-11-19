@@ -20,7 +20,7 @@ const MainSearchBar = () => {
   );
 };
 
-const TopBar = () => {
+const TopBar = (props) => {
   return (
     <div id="chat-menu-top">
       <LogoBar />
@@ -33,11 +33,11 @@ const ChatMenu = (props) => {
   return (
     <div id="chat-menu">
       <TopBar />
-        {props.roomList.isLoading ? (
-          <span id="rooms-loading">Loading conversations...</span>
-        ) : (
-          <RoomList {...props} />
-        )}
+      {props.roomList.isLoading ? (
+        <span id="rooms-loading">Loading conversations...</span>
+      ) : (
+        <RoomList {...props} />
+      )}
     </div>
   )
 };
