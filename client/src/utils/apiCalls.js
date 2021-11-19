@@ -170,7 +170,7 @@ export const createConversation = async (conversationName, users) => {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export const leaveConversation = async (conversationId) => {
   try {

@@ -36,7 +36,7 @@ exports.createConversation = async (req, res) => {
       ['', userid, conversation_id]
     );
 
-    res.status(200).send("Done");
+    res.status(200).json({ message: "Conversation created!" });
     console.log("Query done");
   } catch (err) {
     res.status(500).json(err);
