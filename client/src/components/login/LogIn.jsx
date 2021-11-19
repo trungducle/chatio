@@ -18,12 +18,12 @@ export const LogIn = () => {
     history.push("/");
   };
 
-  if (!error?.error) {
-    socket.auth = {
-      accessToken: localStorage.getItem("a_token")
-    };
-    socket.connect();
-  }
+  // if (!error?.error) {
+  //   socket.auth = {
+  //     accessToken: localStorage.getItem("a_token")
+  //   };
+  //   socket.connect();
+  // }
 
   return (
     <div id="login-wrapper">
